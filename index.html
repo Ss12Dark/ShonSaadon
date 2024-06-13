@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shon Saadon</title>
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="styles/aboutStyle.css">
+    <link rel="stylesheet" href="styles/sliderStyle.css">
+    <link rel="stylesheet" href="styles/navStyle.css">
+    <script src="https://kit.fontawesome.com/a20551eaba.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <header>
+        <div class="background-color"></div>
+        <video autoplay muted loop class="background-video">
+            <source src="videos/portfoliovideo.mp4" type="video/mp4">
+          </video>
+          <div class="nav_holder">
+            <nav>
+                <img src="images/Shon.png" alt="Shon" class="logo">
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#gallery">Gallery</a></li>
+                    <li><a href="#about">About</a></li>
+                </ul>
+            </nav>
+        </div>
+        <div class="container">
+            
+            <div class="header-text">
+                <p>Backend & Game Developer</p>
+                <h1>Hi, I'm <span>Shon</span> Saadon<br>From Israel</h1>
+                <p class="small">SaadonShon@gmail.com</p>
+                <div>
+                    <a href="https://www.youtube.com/channel/UC5xQic2_Pf9E9gQMgsCfifQ"><img src="images/youtube.png" alt="Saadon Towers"></a>
+                    <a href="https://www.linkedin.com/in/shon-saadon-a71077217/"><img src="images/social.png" alt="Shon Saadon"></a>
+                    <a href="mailto:SaadonShon@gmail.com"><img src="images/email.png" alt="SaadonShon@gmail.com"></a>
+                </div>
+            </div>
+        </div>
+    </header>
+    <main>
+        <section  id="gallery" class="slider-section">
+            <div id="quad"> 
+                <!-- Credit to Dudley Storey -->
+                <figure>
+                <img src="images/dropsystemandskills.png" alt="Levels & Stats + Drops + Skills">
+                <figcaption><span>(The Greatest Adventurer)</span><br> RPG system - Levels & Stats + Drops + Skills</figcaption>
+                </figure>
+                <figure>
+                  <img src="images/leveldesign.png" alt="level design binded by nerative">
+                  <figcaption><span>(The Return Of Rakshasa)</span><br> Full Game creation include logic & level design</figcaption>
+                </figure>
+                <figure>
+                  <img src="images/buildingmodule.jpg" alt="Module creation expertise">
+                  <figcaption><span>(In Game Build Module)</span><br> Module creation expertise with UE guidelines</figcaption>
+                </figure>
+                <figure>
+                  <img src="images/shooter.jpg" alt="xxx">
+                  <figcaption><span>(Shooter Minigame)</span><br> End to end project with limited timeframe</figcaption>
+                </figure>
+              </div>
+        </section>
+        <section id="about">
+                <div class="my-photo">
+                    <img src="images/solophoto.png" alt="Shon">
+                </div>
+            <div class="me">
+                <div>
+                    <h2>About me</h2>
+                <p class="about-text">
+                    I am a dedicated backend developer with over <b>two years of professional experience in PHP and SQL</b>,<br><br>
+                    specializing in creating and maintaining robust, scalable systems for a company providing <span class="label code">CRM solutions as Software as a Service (SaaS)</span>.<br><br>
+                    My role has honed my skills in database management, server-side logic, and API development, ensuring seamless and efficient CRM operations for diverse clients.<br><br><br><br>
+
+                    In addition to my backend expertise, I am a self-taught <span class="label gamedesign">Unreal Engine developer</span> with a strong passion for game development.<br><br>
+                    Over the years, I have completed numerous projects, showcasing my ability to design, develop, and implement complex game mechanics and immersive environments.<br><br>
+                    My portfolio highlights my proficiency in Unreal Engine, demonstrating my commitment to continuous learning and innovation in <span class="label leveldesign">both backend development and game design.</span><br><br>
+                </p>
+                </div>
+            </div>
+        
+            <div class="tabs">
+                <p onclick="openTab(event, 'skills')" class="skill_button tab active_tab"><i class="fa-solid fa-code"></i> Skills</p>
+                <p onclick="openTab(event, 'experience')" class="exp_button tab"><i class="fa-solid fa-handshake-simple"></i> Experience</p>
+            </div>
+            <div class="container">
+                <div id="skills" class="tab_content active_tab">
+                    <div class="skill">
+                        <h3>Backend Developer</h3>
+                        <br>
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                        <br><br>
+                        <div class="label" style="background: darkmagenta;"><i class="fa-solid fa-crown"></i>PHP</div>
+                        <div class="label" style="background: darkorange;"><i class="fa-solid fa-crown"></i>SQL</div>
+                        <br>
+                        <p>
+                            <br>Handling product maintaining, packages development, Unit tests and DB migrations.
+                            <br>Experienced with RestAPI, Laravel framework and working close to product team.
+                            <br><br>Striving for results.
+                        </p>
+                    </div>
+                    <div class="skill">
+                        <h3>Unreal Engine Developer</h3>
+                        <br>
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star-half-stroke"></i>
+                        <br><br>
+                        <div class="label" style="background: darkcyan;"><i class="fa-solid fa-crown"></i>Blueprints</div>
+                        <div class="label" style="background: blue;">C++</div>
+                        <br>
+                        <p>
+                            <br>Have multiple courses cerificates by <a href="https://www.udemy.com/" target="_blank">Udemy</a> and <a href="https://www.gamedev.tv/" target="_blank">GameDev</a>.
+                            <br>Creative approach to issues and dedicated to clean & understandable code. 
+                            <br><br>Great passion for new technologies.
+                        </p>
+                    </div>
+                    <div class="skill">
+                        <h3>Level Designer</h3>
+                        <br>
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i>
+                        <br><br>
+                        <div class="label" style="background: grey;"><i class="fa-solid fa-crown"></i>UE Editor</div>
+                        <div class="label" style="background: darkolivegreen;">Photoshop</div>
+                        <div class="label" style="background: darkorchid;">Niagara</div>
+                        <br>
+                        <p>
+                            <br>Self-tought Level designer with related graphic education.
+                            <br>Familier with pazzle-driven maps, nerative quests and game balancing.
+                            <br><br>Multi-category gamer and art lover.
+                        </p>
+                    </div>
+                </div>
+                <div id="experience" class="tab_content">
+                    <div class="work">
+                        <i class="fa-solid fa-location-pin"></i>
+                        <h4>Technion</h4>
+                        <p>Software Practitioner</p>
+                        <p>10/2020 - 09/2021</p>
+                        <p><i class="fa-solid fa-magnifying-glass"></i></p>
+                        <p>Private lessons in various courses, include Java, React and Boolan.</p>
+                    </div>
+                    <div class="space">- - - -</div>
+                    <div class="work">
+                        <i class="fa-solid fa-location-pin"></i>
+                        <h4>Machava Tova</h4>
+                        <p>EcoTech Teacher</p>
+                        <p>12/2020 - 08/2021</p>
+                        <p><i class="fa-solid fa-school"></i></p>
+                        <p>Teaching 15-18 years old students JavaScript, HTML and CSS (Ecommerce)</p>
+                    </div>
+                    <div class="space">- - - -</div>
+                    <div class="work">
+                        <i class="fa-solid fa-location-pin"></i>
+                        <h4>Afcon</h4>
+                        <p>Simplex Programmer</p>
+                        <p>11/2021 - 02/2022</p>
+                        <p><i class="fa-solid fa-diagram-project"></i></p>
+                        <p>Building equations for handling fire sensors and flow switches to active auto extinguishers.</p>
+                    </div>
+                    <div class="space">- - - -</div>
+                    <div class="work">
+                        <i class="fa-solid fa-location-pin"></i>
+                        <h4>Bylith</h4>
+                        <p>Backend Developer</p>
+                        <p>02/2022 - current</p>
+                        <p><i class="fa-solid fa-brain"></i></p>
+                        <p>PHP backend Developer. Handle databases, server logic, and application integration.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <footer>
+            <p>All rights reserve to Shon Saadon 2024.</p>
+        </footer>
+    </main>
+</body>
+<script src="script.js"></script>
+</html>

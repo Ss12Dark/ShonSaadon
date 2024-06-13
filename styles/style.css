@@ -1,0 +1,78 @@
+html {
+	scroll-behavior: smooth;
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    box-sizing: border-box;
+}
+
+body{
+    background: #121212;
+    color: rgb(199, 199, 199);
+}
+
+header{
+    width: 100%;
+    height: 100vh;
+}
+
+.background-video{
+    margin-top: 90px;
+    width: 150%;
+    height: 90vh;
+    background-size: cover;
+    background-position: center;
+    position: fixed;
+    z-index: -2;
+}
+
+.background-color{
+    margin-top: 90px;
+    width: 150%;
+    height: 90vh;
+    background-size: cover;
+    background-position: center;
+    position: fixed;
+    z-index: -1;
+    background: linear-gradient(to right, #121212 26%,rgba(255,255,255,0) 50%);
+}
+
+header .container{
+    padding: 0.1px 10%;
+}
+
+.header-text{
+    margin-top: 20%;
+    font-size: 30px;
+
+}
+
+.header-text h1{
+    font-size: 60px;
+    margin-top: 20px;
+}
+
+.header-text h1 span{
+    color: RoyalBlue;
+}
+
+.header-text img {
+    width: 40px;
+    margin: 5px;
+}
+
+.small {
+    font-size: medium;
+    margin-bottom: 10px;
+}
+
+footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #121212;
+    height: 300px;
+}
