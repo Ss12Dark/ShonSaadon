@@ -48,7 +48,6 @@
 .tabs {
     display: flex;
     justify-content: space-around;
-    margin: 0px 100px;
 }
 
 .tabs p {
