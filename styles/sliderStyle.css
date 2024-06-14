@@ -31,14 +31,14 @@
     margin: 0; opacity: 0; 
     background: rgba(0,0,0,0.4); 
     color: #fff; padding: .3rem; 
-    font-size: 1.2rem; 
+    font-size: 1vw; 
     position: absolute; 
     bottom: 0; width: 100%;
       transition: 1s 1s opacity; 
   }
   div#quad figure figcaption span {
     color: #a3b9ff; padding: .3rem; 
-    font-size: 0.9rem; 
+    font-size: 0.9vw; 
   }
   .expanded { transform: scale(2); z-index: 5;  }
   div#quad figure.expanded figcaption { opacity: 1; }
