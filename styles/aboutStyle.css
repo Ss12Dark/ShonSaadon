@@ -51,7 +51,7 @@
 }
 
 .tabs p {
-    margin: 40px;
+    margin: 10%;
     font-size: 25px;
     padding: 15px;
     border-radius: 100px;
@@ -124,8 +124,22 @@
     background-image: linear-gradient(30deg, rgba(186, 190, 250, 0.151)0%, rgba(255, 255, 0, 0) 60%);
 }
 
+.work {
+    margin: 10px;
+    padding: 15px;
+    border-radius: 30px;
+    background-image: linear-gradient(30deg, rgba(186, 190, 250, 0.151)0%, rgba(255, 255, 0, 0) 60%);
+}
+
+.work-current {
+    margin: 10px;
+    padding: 15px;
+    border-radius: 30px;
+    background-image: linear-gradient(30deg, rgba(186, 190, 250, 0.151)0%, rgba(88, 255, 88, 0.01) 60%, rgba(88, 255, 88, 0.01) 80%, rgb(0, 255, 0) 100%);
+}
+
 #experience{
-    grid-template-columns: 2fr 1fr 2fr 1fr 2fr 1fr 2fr;
+    grid-template-columns: 2fr 1fr 2fr 1fr 2fr;
     text-align: center;
     transition: 0.5s;
     font-size: 40px;
@@ -189,4 +203,12 @@
         font-size: 40px;
         transition: 0.5s;
     }
+
+    .tabs {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+    }
  }
+
+ 

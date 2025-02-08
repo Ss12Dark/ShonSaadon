@@ -76,3 +76,10 @@ footer {
     background-color: #121212;
     height: 300px;
 }
+
+@media screen and (max-width: 1000px) {
+    .header-text h1{
+        font-size: 45px;
+        margin-top: 20px;
+    }
+ }

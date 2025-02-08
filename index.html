@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="styles/aboutStyle.css">
     <link rel="stylesheet" href="styles/sliderStyle.css">
     <link rel="stylesheet" href="styles/navStyle.css">
-    <script src="https://kit.fontawesome.com/a20551eaba.js" crossorigin="anonymous"></script>
 </head>
 <body>
     <header>
@@ -42,26 +41,39 @@
     </header>
     <main>
         <section  id="gallery" class="slider-section">
-            <div id="quad"> 
-                <!-- Credit to Dudley Storey -->
-                <figure>
-                <img src="images/dropsystemandskills.png" alt="Levels & Stats + Drops + Skills">
-                <figcaption><span>(The Greatest Adventurer)</span><br> RPG system - Experience, Stats, Drops and Skills</figcaption>
+            <div class="image-selection">
+                <h3>Screenshots</h3>
+                <br>
+                <div class="images">
+                    <img src="images/dropsystemandskills.png" alt="Levels & Stats + Drops + Skills"  hiddentext="<span>(The Greatest Adventurer)</span><br> RPG system - Experience, Stats, Drops and Skills">
+                    <img src="images/leveldesign.png" alt="Full Game creation" hiddentext="<span>(The Return Of Rakshasa)</span><br> Full Game creation include logic and level design">
+                    <img src="images/buildingmodule.jpg" alt="Module creation expertise" hiddentext="<span>(In Game Build Module)</span><br> Module creation expertise with UE guidelines">
+                    <img src="images/shooter.jpg" alt="Shooter project" hiddentext="<span>(Shooter Minigame)</span><br> End to end project with limited timeframe">
+                    <img src="images/cleanblueprints.png" alt="Blueprint example" hiddentext="<span>(Health Module)</span><br> High Blueprint readability and maintainability">
+                </div>
+            </div>
+            <div class="mid"> 
+                <h2>My Work</h2>
+                <br>
+                <figure id="mid-image">
+                <img id="center-image" src="images/dropsystemandskills.png" alt="Levels & Stats + Drops + Skills">
+                <figcaption id="center-text"><span>(The Greatest Adventurer)</span><br> RPG system - Experience, Stats, Drops and Skills</figcaption>
                 </figure>
-                <figure>
-                  <img src="images/leveldesign.png" alt="Full Game creation">
-                  <figcaption><span>(The Return Of Rakshasa)</span><br> Full Game creation include logic and level design</figcaption>
-                </figure>
-                <figure>
-                  <img src="images/buildingmodule.jpg" alt="Module creation expertise">
-                  <figcaption><span>(In Game Build Module)</span><br> Module creation expertise with UE guidelines</figcaption>
-                </figure>
-                <figure>
-                  <img src="images/shooter.jpg" alt="xxx">
-                  <figcaption><span>(Shooter Minigame)</span><br> End to end project with limited timeframe</figcaption>
-                </figure>
-              </div>
+                <iframe id="mid-video" class="mid-hidden" src="https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7289190521606987777?compact=1" scrolling="no" frameborder="0" allowfullscreen="" title="Embedded post"></iframe>
+            </div>
+            <div class="video-selection">
+                <h3>Videos</h3>
+                <br>
+                <div class="videos">
+                    <img src="images/homesailors.png" alt="GGJ 2025" hiddenlink="https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7289190521606987777?compact=1">
+                    <img src="images/patrolnomore.png" alt="Patrol mini game" hiddenlink="https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7232137525807468544?compact=1">
+                    <img src="images/clicker.png" alt="Mobile Clicker game" hiddenlink="https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7229507655843610624?compact=1">
+                    <img src="images/greatestvideo1.png" alt="TGA" hiddenlink="https://www.youtube.com/embed/KHVbWNFR2Iw?si=oTSYHnhABgaZOiDu">
+                    <img src="images/raksahsavideo2.png" alt="Rakshasa" hiddenlink="https://www.youtube.com/embed/f2A1ewqIwRc?si=0_XW1tnY7ojM4NKH">
+                </div>
+            </div>
         </section>
+        
         <section id="about">
                 <div class="my-photo">
                     <img src="images/solophoto.png" alt="Shon">
@@ -71,7 +83,7 @@
                     <h2>About me</h2>
                 <p class="about-text">
                     I am a dedicated backend developer with over <b>three years of professional experience</b>,<br><br>
-                    specializing in creating and maintaining robust, scalable systems for a company providing <span class="label code">CRM solutions as Software as a Service (SaaS)</span> and <span class="label code">Slot Machines Gaming</span>.<br><br>
+                    specializing in creating and maintaining robust, scalable systems for a company providing <span class="label code">Slot Machines Gaming</span>.<br><br>
                     My role has honed my skills in database management, server-side logic, and API development, ensuring seamless and efficient multiple operations for diverse clients.<br><br><br><br>
 
                     In addition to my backend expertise, I am a self-taught <span class="label gamedesign">Unreal Engine developer</span> with a strong passion for game development.<br><br>
@@ -139,9 +151,9 @@
                         <p>Software Practitioner</p>
                         <p>10/2020 - 09/2021</p>
                         <p><i class="fa-solid fa-magnifying-glass"></i></p>
-                        <p>Private lessons in various courses, include Java, React and Boolan.</p>
+                        <p>Private lessons in various courses, include Java, React and Boolean.</p>
                     </div>
-                    <div class="space">- - - -</div>
+                    <div class="space">&#8594;</div>
                     <div class="work">
                         <i class="fa-solid fa-location-pin"></i>
                         <h4>Machava Tova</h4>
@@ -150,7 +162,7 @@
                         <p><i class="fa-solid fa-school"></i></p>
                         <p>Teaching 15-18 years old students JavaScript, HTML and CSS (Ecommerce)</p>
                     </div>
-                    <div class="space">- - - -</div>
+                    <div class="space">&#8594;</div>
                     <div class="work">
                         <i class="fa-solid fa-location-pin"></i>
                         <h4>Afcon</h4>
@@ -159,7 +171,7 @@
                         <p><i class="fa-solid fa-diagram-project"></i></p>
                         <p>Building equations for handling fire sensors and flow switches to active auto extinguishers.</p>
                     </div>
-                    <div class="space">- - - -</div>
+                    
                     <div class="work">
                         <i class="fa-solid fa-location-pin"></i>
                         <h4>Bylith</h4>
@@ -168,14 +180,23 @@
                         <p><i class="fa-solid fa-brain"></i></p>
                         <p>PHP backend Developer. Handle databases, server logic, and application integration.</p>
                     </div>
-                    <div class="space">- - - -</div>
-                    <div class="work">
+                    <div class="space">&#8594;</div>
+                    <div class="work work-current">
                         <i class="fa-solid fa-location-pin"></i>
                         <h4>Sciplay</h4>
                         <p>Backend Developer</p>
-                        <p>09/2024 - current</p>
+                        <p>09/2024 - Current</p>
                         <p><i class="fa-solid fa-brain"></i></p>
                         <p>Creating features & game logics, endpoint, tools and handling SQL / Couchbase documents.</p>
+                    </div>
+                    <div class="space">+</div>
+                    <div class="work work-current">
+                        <i class="fa-solid fa-location-pin"></i>
+                        <h4>Freelance</h4>
+                        <p>Game Developer</p>
+                        <p>2020 - Forever</p>
+                        <p><i class="fa-solid fa-brain"></i></p>
+                        <p>Doing what I love</p>
                     </div>
                 </div>
             </div>
