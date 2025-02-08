@@ -41,16 +41,21 @@
   padding-right: 15%;
 }
 
+.images:hover> :not(:hover) , .videos:hover> :not(:hover) {
+  filter: blur(2px);
+  opacity: 0.5;
+}
+
 .video-selection img, .image-selection img{
   width: 100%;
   cursor: pointer;
   border-radius: 5%;
+  transition: 0.3s;
 }
 
 .video-selection img:hover, .image-selection img:hover{
-  width: 110%;
-  transition: 0.5s;
   z-index: 10;
+  transition: 0.5s;
 }
 
 .mid-hidden {
