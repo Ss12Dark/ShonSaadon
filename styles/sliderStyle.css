@@ -14,7 +14,7 @@
 
 .mid figure figcaption { 
   margin: 0;
-  background: rgba(0,0,0,0.4); 
+  background-image: linear-gradient(30deg, rgba(186, 190, 250, 0.151)0%, rgba(255, 255, 0, 0) 60%);
   color: #fff; padding: .3rem; 
   font-size: 1.8em;   
   transition: 1s 1s opacity; 
@@ -44,6 +44,7 @@
 .video-selection img, .image-selection img{
   width: 100%;
   cursor: pointer;
+  border-radius: 5%;
 }
 
 .video-selection img:hover, .image-selection img:hover{
@@ -61,12 +62,12 @@
 #gallery h3 {
   text-align: center;
   color:  rgb(125, 157, 255);
-  font-size: 1em;
+  font-size: 1.2em;
 }
 
 iframe {
   width: 100%;
-  height: 550px;
+  height: 700px;
 }
 
 .images :nth-child(1) {
