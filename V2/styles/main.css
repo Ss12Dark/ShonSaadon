@@ -20,16 +20,12 @@
 
 .gate-door--left {
   background: linear-gradient(90deg, #06060e 0%, #0e0e22 40%, #161630 100%);
-  transform-origin: left center;
-  transform: perspective(1800px) rotateY(0deg);
   border-right: 1px solid rgba(45, 50, 95, 0.5);
   box-shadow: inset -12px 0 30px rgba(0, 0, 0, 0.9);
 }
 
 .gate-door--right {
   background: linear-gradient(90deg, #161630 0%, #0e0e22 60%, #06060e 100%);
-  transform-origin: right center;
-  transform: perspective(1800px) rotateY(0deg);
   border-left: 1px solid rgba(45, 50, 95, 0.5);
   box-shadow: inset 12px 0 30px rgba(0, 0, 0, 0.9);
 }
@@ -197,51 +193,88 @@
   }
 }
 
-/* ── Center latch ──────────────────────────────────────────── */
-.gate-latch {
+/* ── Seal emblem ───────────────────────────────────────────── */
+.gate-seal {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  width: 160px;
+  height: 160px;
   pointer-events: none;
   z-index: 10;
+  filter:
+    drop-shadow(0 0 10px rgba(0, 229, 204, 0.65))
+    drop-shadow(0 0 26px rgba(79, 124, 255, 0.4));
+  animation: seal-idle 2.8s ease-in-out infinite;
 }
 
-.gate-latch-body {
-  width: 48px;
-  height: 70px;
-  background: linear-gradient(
-    155deg,
-    #12122c 0%,
-    #262660 35%,
-    #38388a 50%,
-    #262660 65%,
-    #12122c 100%
-  );
-  border-radius: 10px;
-  border: 1px solid rgba(79, 124, 255, 0.55);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow:
-    0 0 20px rgba(0, 229, 204, 0.5),
-    0 0 44px rgba(79, 124, 255, 0.3),
-    inset 0 1px 0 rgba(255,255,255,0.08);
-  animation: latch-pulse 2s ease infinite;
-}
-
-.gate-latch-body i {
-  font-size: 1.5rem;
-  color: rgba(0, 229, 204, 0.75);
-}
-
-@keyframes latch-pulse {
+@keyframes seal-idle {
   0%, 100% {
-    box-shadow: 0 0 20px rgba(0,229,204,0.5), 0 0 44px rgba(79,124,255,0.3);
+    filter: drop-shadow(0 0 10px rgba(0,229,204,0.65)) drop-shadow(0 0 26px rgba(79,124,255,0.4));
   }
   50% {
-    box-shadow: 0 0 30px rgba(0,229,204,0.85), 0 0 65px rgba(79,124,255,0.5);
+    filter: drop-shadow(0 0 18px rgba(0,229,204,0.95)) drop-shadow(0 0 42px rgba(79,124,255,0.6));
   }
+}
+
+.gate-seal.cracking {
+  animation: seal-crack 0.38s cubic-bezier(0.2, 0, 0.8, 1) forwards;
+}
+
+@keyframes seal-crack {
+  0%   { transform: translate(-50%, -50%) scale(1)    rotate(0deg);   opacity: 1; }
+  18%  { transform: translate(-50%, -50%) scale(1.18) rotate(3deg);   opacity: 1; }
+  38%  { transform: translate(-50%, -50%) scale(0.88) rotate(-3deg);  opacity: 0.9; }
+  65%  { transform: translate(-50%, -50%) scale(1.25) rotate(1.5deg); opacity: 0.55; }
+  100% { transform: translate(-50%, -50%) scale(0)    rotate(0deg);   opacity: 0; }
+}
+
+/* ── Sparks ────────────────────────────────────────────────── */
+.gate-sparks {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  z-index: 11;
+}
+
+.gate-spark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 2px;
+  border-radius: 2px;
+  transform-origin: left center;
+  animation: spark-shoot var(--dur, 0.5s) ease-out var(--delay, 0s) forwards;
+  opacity: 0;
+}
+
+@keyframes spark-shoot {
+  0%   { transform: rotate(var(--a)) translateX(0)         scaleX(1);   opacity: 1; }
+  60%  { opacity: 0.7; }
+  100% { transform: rotate(var(--a)) translateX(var(--d))  scaleX(0.3); opacity: 0; }
+}
+
+.gate-flash {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: white;
+  transform: translate(-50%, -50%);
+  animation: gate-flash 0.5s ease-out forwards;
+  pointer-events: none;
+}
+
+@keyframes gate-flash {
+  0%   { transform: translate(-50%, -50%) scale(1);  opacity: 1; }
+  35%  { transform: translate(-50%, -50%) scale(22); opacity: 0.75; }
+  100% { transform: translate(-50%, -50%) scale(45); opacity: 0; }
 }
 
 /* ── Scroll hint ───────────────────────────────────────────── */

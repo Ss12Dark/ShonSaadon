@@ -7,43 +7,79 @@
     const rightDoor    = gate.querySelector('.gate-door--right');
     const gateSeam     = gate.querySelector('.gate-seam');
     const gateHint     = gate.querySelector('.gate-hint');
-    const gateLatch    = document.getElementById('gate-latch');
+    const gateSeal     = document.getElementById('gate-seal');
+    const sparksEl     = document.getElementById('gate-sparks');
     const progressFill = document.getElementById('gate-progress-fill');
     const header       = document.querySelector('.site-header');
 
-    let targetProg  = 0;   // where the user has scrolled to (0–1)
-    let currentProg = 0;   // what's currently rendered (lerped)
-    let isOpen      = false;
-    let touchPrev   = null;
-    let rafId       = null;
+    let targetProg   = 0;
+    let currentProg  = 0;
+    let isOpen       = false;
+    let sparksFired  = false;
+    let touchPrev    = null;
+    let rafId        = null;
 
-    const SCROLL_DIST = 380;  // total wheel delta to reach progress = 1
-    const LERP        = 0.09; // smoothing factor — lower = silkier, higher = snappier
+    const SCROLL_DIST = 360;
+    const LERP        = 0.09;
 
     document.body.style.overflow = 'hidden';
 
-    function applyProgress(p) {
-        // 3-D hinge rotation: perspective() in the transform avoids the
-        // flex-parent perspective + backface-visibility rendering bug
-        const angle = p * 90;
-        leftDoor.style.transform  = `perspective(1800px) rotateY(${-angle}deg)`;
-        rightDoor.style.transform = `perspective(1800px) rotateY(${angle}deg)`;
+    // ── Sparks ────────────────────────────────────────────
+    function fireSparks() {
+        if (sparksFired || !sparksEl) return;
+        sparksFired = true;
 
-        gateSeam.style.opacity  = String(Math.max(0, 1 - p * 3.5));
-        gateHint.style.opacity  = String(Math.max(0, 1 - p * 5));
-        gateLatch.style.opacity = String(Math.max(0, 1 - p * 3.2));
-        gateLatch.style.transform =
-            `translate(-50%, -50%) scale(${Math.max(0.3, 1 - p)})`;
+        // Crack the seal
+        if (gateSeal) gateSeal.classList.add('cracking');
+
+        // Central flash bloom
+        const flash = document.createElement('div');
+        flash.className = 'gate-flash';
+        sparksEl.appendChild(flash);
+        flash.addEventListener('animationend', () => flash.remove(), { once: true });
+
+        // Radial spark streaks
+        const COUNT = 22;
+        for (let i = 0; i < COUNT; i++) {
+            const spark  = document.createElement('div');
+            spark.className = 'gate-spark';
+
+            const angle  = (i / COUNT) * 360 + (Math.random() - 0.5) * (360 / COUNT);
+            const dist   = 65 + Math.random() * 115;
+            const width  = 14 + Math.random() * 32;
+            const dur    = (0.32 + Math.random() * 0.36).toFixed(3);
+            const delay  = (Math.random() * 0.07).toFixed(3);
+            const isCyan = Math.random() > 0.38;
+
+            spark.style.cssText = [
+                `width:${width}px`,
+                `background:linear-gradient(90deg,#fff,${isCyan ? '#00e5cc' : '#4f7cff'},transparent)`,
+                `--a:${angle.toFixed(1)}deg`,
+                `--d:${dist.toFixed(0)}px`,
+                `--dur:${dur}s`,
+                `--delay:${delay}s`,
+            ].join(';');
+
+            sparksEl.appendChild(spark);
+            spark.addEventListener('animationend', () => spark.remove(), { once: true });
+        }
+    }
+
+    // ── Progress → DOM ────────────────────────────────────
+    function applyProgress(p) {
+        leftDoor.style.transform  = `translateX(${-p * 100}%)`;
+        rightDoor.style.transform = `translateX(${p * 100}%)`;
+
+        gateSeam.style.opacity = String(Math.max(0, 1 - p * 4.5));
+        gateHint.style.opacity = String(Math.max(0, 1 - p * 7));
 
         if (progressFill) progressFill.style.width = `${p * 100}%`;
     }
 
     function tick() {
-        // Lerp toward target for buttery smoothness
         currentProg += (targetProg - currentProg) * LERP;
         applyProgress(currentProg);
 
-        // When close enough and target is fully open, snap and finish
         if (targetProg >= 1 && currentProg >= 0.96) {
             snapOpen();
             return;
@@ -60,39 +96,38 @@
         isOpen = true;
         cancelAnimationFrame(rafId);
 
-        const ease = 'cubic-bezier(0.22, 1, 0.36, 1)'; // fast start, gentle landing
-        leftDoor.style.transition  = `transform 0.65s ${ease}`;
-        rightDoor.style.transition = `transform 0.65s ${ease}`;
-        leftDoor.style.transform   = 'perspective(1800px) rotateY(-92deg)';
-        rightDoor.style.transform  = 'perspective(1800px) rotateY(92deg)';
+        // Snap panels apart with fast ease-out (feels like a burst)
+        const ease = 'cubic-bezier(0.2, 0, 0.0, 1)';
+        leftDoor.style.transition  = `transform 0.5s ${ease}`;
+        rightDoor.style.transition = `transform 0.5s ${ease}`;
+        leftDoor.style.transform   = 'translateX(-100%)';
+        rightDoor.style.transform  = 'translateX(100%)';
 
-        gateSeam.style.transition  = 'opacity 0.2s ease';
-        gateSeam.style.opacity     = '0';
-        gateHint.style.opacity     = '0';
-        gateLatch.style.transition = 'opacity 0.18s ease, transform 0.18s ease';
-        gateLatch.style.opacity    = '0';
+        gateSeam.style.transition = 'opacity 0.15s ease';
+        gateSeam.style.opacity    = '0';
+        gateHint.style.opacity    = '0';
 
         document.body.style.overflow = '';
         document.body.classList.remove('gate-active');
 
         if (header) {
-            header.style.transition    = 'opacity 0.55s ease 0.28s';
+            header.style.transition    = 'opacity 0.5s ease 0.22s';
             header.style.opacity       = '1';
             header.style.pointerEvents = '';
         }
 
-        setTimeout(() => gate.remove(), 800);
+        setTimeout(() => gate.remove(), 700);
     }
 
-    // ── Wheel ─────────────────────────────────────────────
+    // ── Input handlers ─────────────────────────────────────
     window.addEventListener('wheel', (e) => {
         if (isOpen) return;
         e.preventDefault();
+        fireSparks();
         targetProg = Math.max(0, Math.min(1, targetProg + e.deltaY / SCROLL_DIST));
         startTick();
     }, { passive: false });
 
-    // ── Touch ─────────────────────────────────────────────
     window.addEventListener('touchstart', (e) => {
         if (isOpen) return;
         touchPrev = e.touches[0].clientY;
@@ -103,15 +138,16 @@
         e.preventDefault();
         const delta = touchPrev - e.touches[0].clientY;
         touchPrev   = e.touches[0].clientY;
-        targetProg  = Math.max(0, Math.min(1, targetProg + delta / SCROLL_DIST));
+        fireSparks();
+        targetProg = Math.max(0, Math.min(1, targetProg + delta / SCROLL_DIST));
         startTick();
     }, { passive: false });
 
-    // ── Keyboard ──────────────────────────────────────────
     window.addEventListener('keydown', (e) => {
         if (isOpen) return;
         if (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowDown') {
             e.preventDefault();
+            fireSparks();
             targetProg = 1;
             startTick();
         }
