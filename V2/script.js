@@ -23,10 +23,11 @@
     document.body.style.overflow = 'hidden';
 
     function applyProgress(p) {
-        // 3-D hinge rotation: left door swings left, right door swings right
+        // 3-D hinge rotation: perspective() in the transform avoids the
+        // flex-parent perspective + backface-visibility rendering bug
         const angle = p * 90;
-        leftDoor.style.transform  = `rotateY(${-angle}deg)`;
-        rightDoor.style.transform = `rotateY(${angle}deg)`;
+        leftDoor.style.transform  = `perspective(1800px) rotateY(${-angle}deg)`;
+        rightDoor.style.transform = `perspective(1800px) rotateY(${angle}deg)`;
 
         gateSeam.style.opacity  = String(Math.max(0, 1 - p * 3.5));
         gateHint.style.opacity  = String(Math.max(0, 1 - p * 5));
@@ -62,8 +63,8 @@
         const ease = 'cubic-bezier(0.22, 1, 0.36, 1)'; // fast start, gentle landing
         leftDoor.style.transition  = `transform 0.65s ${ease}`;
         rightDoor.style.transition = `transform 0.65s ${ease}`;
-        leftDoor.style.transform   = 'rotateY(-92deg)';
-        rightDoor.style.transform  = 'rotateY(92deg)';
+        leftDoor.style.transform   = 'perspective(1800px) rotateY(-92deg)';
+        rightDoor.style.transform  = 'perspective(1800px) rotateY(92deg)';
 
         gateSeam.style.transition  = 'opacity 0.2s ease';
         gateSeam.style.opacity     = '0';

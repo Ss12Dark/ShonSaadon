@@ -1,6 +1,22 @@
 document.addEventListener('DOMContentLoaded', () => {
     const videos = document.querySelectorAll('video');
 
+    // ── Click wrapper → play / pause ──────────────────────
+    document.querySelectorAll('.video-wrapper').forEach(wrapper => {
+        wrapper.style.cursor = 'pointer';
+        wrapper.addEventListener('click', () => {
+            const video = wrapper.querySelector('video');
+            if (!video) return;
+            if (video.paused) {
+                // Pause every other video first
+                videos.forEach(v => { if (v !== video && !v.paused) v.pause(); });
+                video.play();
+            } else {
+                video.pause();
+            }
+        });
+    });
+
     // ── Play / pause overlay state ─────────────────────────
     videos.forEach(video => {
         video.addEventListener('play',  () => video.setAttribute('data-playing', 'true'));

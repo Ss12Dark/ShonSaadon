@@ -278,6 +278,7 @@ body::before {
   aspect-ratio: 9 / 16;
   background: var(--color-bg);
   overflow: hidden;
+  cursor: pointer;
 }
 
 .video-wrapper video {
