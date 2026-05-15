@@ -17,7 +17,63 @@
   <link rel="stylesheet" href="styles/nav.css">
   <link rel="stylesheet" href="styles/main.css">
 </head>
-<body>
+<body class="gate-active">
+
+  <!-- ── Gate ──────────────────────────────────────────────── -->
+  <div id="gate" aria-hidden="true">
+
+    <!-- Left door -->
+    <div class="gate-door gate-door--left">
+      <div class="gate-rail gate-rail--top"></div>
+      <div class="gate-rail gate-rail--a"></div>
+      <div class="gate-rail gate-rail--b"></div>
+      <div class="gate-rail gate-rail--bot"></div>
+      <div class="gate-hinges">
+        <div class="gate-hinge"></div>
+        <div class="gate-hinge"></div>
+        <div class="gate-hinge"></div>
+      </div>
+      <div class="gate-label gate-label--left">SHON</div>
+    </div>
+
+    <!-- Right door -->
+    <div class="gate-door gate-door--right">
+      <div class="gate-rail gate-rail--top"></div>
+      <div class="gate-rail gate-rail--a"></div>
+      <div class="gate-rail gate-rail--b"></div>
+      <div class="gate-rail gate-rail--bot"></div>
+      <div class="gate-hinges">
+        <div class="gate-hinge"></div>
+        <div class="gate-hinge"></div>
+        <div class="gate-hinge"></div>
+      </div>
+      <div class="gate-label gate-label--right">
+        <span>SAADON</span>
+        <p>Backend &amp; Game Developer</p>
+      </div>
+    </div>
+
+    <!-- Glowing seam + latch -->
+    <div class="gate-seam"></div>
+    <div class="gate-latch" id="gate-latch">
+      <div class="gate-latch-body">
+        <i class="fa-solid fa-lock"></i>
+      </div>
+    </div>
+
+    <!-- Scroll hint -->
+    <div class="gate-hint">
+      <div class="gate-hint-bar"></div>
+      <i class="fa-solid fa-angles-down"></i>
+      <span>Scroll to enter</span>
+    </div>
+
+    <!-- Progress -->
+    <div class="gate-progress-track">
+      <div class="gate-progress-fill" id="gate-progress-fill"></div>
+    </div>
+
+  </div>
 
   <!-- ── Navigation ────────────────────────────────────────── -->
   <header class="site-header">

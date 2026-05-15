@@ -1,4 +1,373 @@
 /* ============================================================
+   GATE
+   ============================================================ */
+#gate {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  display: flex;
+  perspective: 1800px;
+  cursor: ns-resize;
+}
+
+/* ── Doors ─────────────────────────────────────────────────── */
+.gate-door {
+  position: relative;
+  flex: 1;
+  height: 100%;
+  will-change: transform;
+  backface-visibility: hidden;
+  overflow: hidden;
+}
+
+.gate-door--left {
+  background: linear-gradient(90deg, #06060e 0%, #0e0e22 40%, #161630 100%);
+  transform-origin: left center;
+  border-right: 1px solid rgba(45, 50, 95, 0.5);
+  box-shadow: inset -12px 0 30px rgba(0, 0, 0, 0.9);
+}
+
+.gate-door--right {
+  background: linear-gradient(90deg, #161630 0%, #0e0e22 60%, #06060e 100%);
+  transform-origin: right center;
+  border-left: 1px solid rgba(45, 50, 95, 0.5);
+  box-shadow: inset 12px 0 30px rgba(0, 0, 0, 0.9);
+}
+
+/* Vertical iron bars via repeating gradient */
+.gate-door::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    90deg,
+    transparent               0px,
+    transparent               22px,
+    rgba(8,  8,  30, 0.95)   22px,
+    rgba(18, 18, 52, 1)      25px,
+    rgba(34, 34, 82, 1)      28px,
+    rgba(52, 52, 112, 1)     30px,   /* bar center highlight */
+    rgba(34, 34, 82, 1)      32px,
+    rgba(18, 18, 52, 1)      35px,
+    rgba(8,  8,  30, 0.95)   38px,
+    transparent               38px,
+    transparent               60px
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Top spear tips — a second bar-aligned gradient clipped to a zigzag */
+.gate-door::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 56px;
+  background: repeating-linear-gradient(
+    90deg,
+    transparent               0px,
+    transparent               22px,
+    rgba(18, 18, 52, 1)      22px,
+    rgba(52, 52, 112, 1)     30px,
+    rgba(18, 18, 52, 1)      38px,
+    transparent               38px,
+    transparent               60px
+  );
+  /* Zigzag clip that creates pointed spear tips at the top of each bar */
+  clip-path: polygon(
+     0%  100%,  0%  40%,  3.3% 0%,  6.7%  40%,
+     6.7% 100%, 6.7% 40%, 10%  0%,  13.3% 40%,
+    13.3% 100%, 13.3% 40%, 16.7% 0%, 20%   40%,
+    20%  100%, 20%   40%, 23.3% 0%,  26.7% 40%,
+    26.7% 100%, 26.7% 40%, 30%  0%,  33.3% 40%,
+    33.3% 100%, 33.3% 40%, 36.7% 0%, 40%   40%,
+    40%  100%, 40%   40%, 43.3% 0%,  46.7% 40%,
+    46.7% 100%, 46.7% 40%, 50%  0%,  53.3% 40%,
+    53.3% 100%, 53.3% 40%, 56.7% 0%, 60%   40%,
+    60%  100%, 60%   40%, 63.3% 0%,  66.7% 40%,
+    66.7% 100%, 66.7% 40%, 70%  0%,  73.3% 40%,
+    73.3% 100%, 73.3% 40%, 76.7% 0%, 80%   40%,
+    80%  100%, 80%   40%, 83.3% 0%,  86.7% 40%,
+    86.7% 100%, 86.7% 40%, 90%  0%,  93.3% 40%,
+    93.3% 100%, 93.3% 40%, 96.7% 0%, 100%  40%,
+    100% 100%
+  );
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* ── Horizontal rails ──────────────────────────────────────── */
+.gate-rail {
+  position: absolute;
+  left: 0;
+  right: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(20, 20, 50, 0.95) 0%,
+    rgba(44, 46, 100, 1)  20%,
+    rgba(64, 66, 138, 1)  50%,
+    rgba(44, 46, 100, 1)  80%,
+    rgba(20, 20, 50, 0.95) 100%
+  );
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.75), 0 -1px 3px rgba(255,255,255,0.03);
+  z-index: 3;
+}
+
+.gate-rail--top  { top: 0;      height: 20px; }
+.gate-rail--bot  { bottom: 0;   height: 20px; }
+.gate-rail--a    { top: 26%;    height: 13px; transform: translateY(-50%); }
+.gate-rail--b    { top: 65%;    height: 13px; transform: translateY(-50%); }
+
+/* ── Hinges ────────────────────────────────────────────────── */
+.gate-hinges {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  padding: 70px 0;
+  z-index: 5;
+}
+
+.gate-door--left  .gate-hinges { left:  0; }
+.gate-door--right .gate-hinges { right: 0; }
+
+.gate-hinge {
+  width: 28px;
+  height: 56px;
+  background: linear-gradient(
+    90deg,
+    #080820 0%,
+    #1c1c44 25%,
+    #363674 45%,
+    #484898 50%,
+    #363674 55%,
+    #1c1c44 75%,
+    #080820 100%
+  );
+  border-radius: 4px;
+  box-shadow: 4px 0 12px rgba(0,0,0,0.9), -1px 0 5px rgba(0,0,0,0.7);
+  position: relative;
+}
+
+/* Hinge bolt */
+.gate-hinge::after {
+  content: '';
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 36% 34%, #8080cc, #181836);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: inset 0 1px 4px rgba(0,0,0,0.9), 0 0 6px rgba(79,124,255,0.3);
+}
+
+/* ── Name labels ───────────────────────────────────────────── */
+.gate-label {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: clamp(2.8rem, 8.5vw, 8rem);
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  line-height: 1;
+  background: linear-gradient(140deg, #5577ee 20%, #00d9c0 80%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  user-select: none;
+  z-index: 6;
+  opacity: 0.92;
+}
+
+.gate-label--left  { right: 5vw; text-align: right; }
+
+.gate-label--right {
+  left: 5vw;
+  display: flex;
+  flex-direction: column;
+}
+
+.gate-label--right p {
+  font-size: clamp(0.6rem, 1.2vw, 0.88rem);
+  -webkit-text-fill-color: var(--color-muted);
+  color: var(--color-muted);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-top: 0.7rem;
+  font-weight: 400;
+}
+
+/* ── Center seam glow ──────────────────────────────────────── */
+.gate-seam {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 3px;
+  height: 100%;
+  transform: translateX(-50%);
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    #00e5cc     12%,
+    #4f7cff     50%,
+    #00e5cc     88%,
+    transparent 100%
+  );
+  box-shadow:
+    0 0 12px rgba(0, 229, 204, 0.9),
+    0 0 32px rgba(0, 229, 204, 0.5),
+    0 0 65px rgba(79, 124, 255, 0.25);
+  animation: seam-pulse 2s ease infinite;
+  pointer-events: none;
+  z-index: 8;
+}
+
+@keyframes seam-pulse {
+  0%, 100% { opacity: 0.85; }
+  50% {
+    opacity: 1;
+    box-shadow: 0 0 20px rgba(0,229,204,1), 0 0 50px rgba(0,229,204,0.6);
+  }
+}
+
+/* ── Center latch ──────────────────────────────────────────── */
+.gate-latch {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 10;
+}
+
+.gate-latch-body {
+  width: 48px;
+  height: 70px;
+  background: linear-gradient(
+    155deg,
+    #12122c 0%,
+    #262660 35%,
+    #38388a 50%,
+    #262660 65%,
+    #12122c 100%
+  );
+  border-radius: 10px;
+  border: 1px solid rgba(79, 124, 255, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+    0 0 20px rgba(0, 229, 204, 0.5),
+    0 0 44px rgba(79, 124, 255, 0.3),
+    inset 0 1px 0 rgba(255,255,255,0.08);
+  animation: latch-pulse 2s ease infinite;
+}
+
+.gate-latch-body i {
+  font-size: 1.5rem;
+  color: rgba(0, 229, 204, 0.75);
+}
+
+@keyframes latch-pulse {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(0,229,204,0.5), 0 0 44px rgba(79,124,255,0.3);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(0,229,204,0.85), 0 0 65px rgba(79,124,255,0.5);
+  }
+}
+
+/* ── Scroll hint ───────────────────────────────────────────── */
+.gate-hint {
+  position: absolute;
+  bottom: 2.4rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.45rem;
+  pointer-events: none;
+  z-index: 9;
+  white-space: nowrap;
+}
+
+.gate-hint-bar {
+  width: 1px;
+  height: 36px;
+  background: linear-gradient(180deg, rgba(0,229,204,0.9), transparent);
+  animation: bar-fall 1.9s ease infinite;
+}
+
+@keyframes bar-fall {
+  0%   { transform: scaleY(0); transform-origin: top;    opacity: 0; }
+  40%  { transform: scaleY(1); transform-origin: top;    opacity: 1; }
+  60%  { transform: scaleY(1); transform-origin: bottom; opacity: 1; }
+  100% { transform: scaleY(0); transform-origin: bottom; opacity: 0; }
+}
+
+.gate-hint i {
+  color: var(--color-accent);
+  font-size: 1rem;
+  animation: hint-bounce 1.9s ease infinite;
+}
+
+.gate-hint span {
+  color: var(--color-muted);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+@keyframes hint-bounce {
+  0%, 100% { transform: translateY(0);   opacity: 0.8; }
+  50%       { transform: translateY(4px); opacity: 1;   }
+}
+
+/* ── Progress bar ──────────────────────────────────────────── */
+.gate-progress-track {
+  position: absolute;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 44px;
+  height: 3px;
+  background: rgba(255,255,255,0.07);
+  border-radius: 2px;
+  overflow: hidden;
+  z-index: 9;
+}
+
+.gate-progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+  border-radius: 2px;
+}
+
+/* ── Nav hidden until gate opens ───────────────────────────── */
+body.gate-active .site-header {
+  opacity: 0;
+  pointer-events: none;
+  transition: none;
+}
+
+@media (max-width: 500px) {
+  .gate-label           { font-size: clamp(2rem, 13vw, 4rem); }
+  .gate-label--right p  { display: none; }
+  .gate-hinge           { width: 20px; height: 40px; }
+  .gate-hinges          { padding: 50px 0; width: 20px; }
+}
+
+/* ============================================================
    HERO
    ============================================================ */
 .hero {
