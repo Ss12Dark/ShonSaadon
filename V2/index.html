@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Shon Saadon — Backend & Game Developer from Israel. PHP, SQL, Unreal Engine 5.">
+  <meta property="og:title" content="Shon Saadon | Developer">
+  <meta property="og:description" content="Backend & Game Developer from Israel. PHP, SQL, UE5.">
+  <meta property="og:type" content="website">
+  <title>Shon Saadon</title>
+  <link rel="icon" href="../images/Shon.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="styles/tokens.css">
+  <link rel="stylesheet" href="styles/base.css">
+  <link rel="stylesheet" href="styles/nav.css">
+  <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+
+  <!-- ── Navigation ────────────────────────────────────────── -->
+  <header class="site-header">
+    <nav class="nav">
+      <a href="#home" class="nav-logo" aria-label="Home">
+        <img src="../images/Shon.png" alt="Shon Saadon">
+      </a>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="#home"    class="nav-link active">Home</a></li>
+        <li><a href="#gallery" class="nav-link">Gallery</a></li>
+        <li><a href="#about"   class="nav-link">About</a></li>
+        <li><a href="videosindex.html" class="nav-link nav-link--cta">AI Videos</a></li>
+      </ul>
+      <button class="nav-hamburger" id="nav-hamburger" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+  </header>
+
+  <!-- ── Hero ──────────────────────────────────────────────── -->
+  <section class="hero" id="home">
+    <div class="hero-bg">
+      <video autoplay muted loop playsinline class="hero-video">
+        <source src="../videos/portfoliovideo.mp4" type="video/mp4">
+      </video>
+      <div class="hero-overlay"></div>
+    </div>
+    <div class="hero-content">
+      <p class="hero-tagline">Backend &amp; Game Developer</p>
+      <h1>Hi, I'm <span class="highlight">Shon</span> Saadon<br>From Israel</h1>
+      <p class="hero-email">SaadonShon@gmail.com</p>
+      <div class="hero-links">
+        <a href="https://www.youtube.com/channel/UC5xQic2_Pf9E9gQMgsCfifQ"
+           target="_blank" rel="noopener" class="hero-social" aria-label="YouTube">
+          <img src="../images/youtube.png" alt="">
+        </a>
+        <a href="https://www.linkedin.com/in/shon-saadon-a71077217/"
+           target="_blank" rel="noopener" class="hero-social" aria-label="LinkedIn">
+          <img src="../images/social.png" alt="">
+        </a>
+        <a href="mailto:SaadonShon@gmail.com" class="hero-social" aria-label="Email">
+          <img src="../images/email.png" alt="">
+        </a>
+        <a href="videosindex.html" class="hero-social" aria-label="AI Video Creator">
+          <img src="../images/ai.png" alt="">
+        </a>
+      </div>
+      <a href="#gallery" class="btn btn-primary">
+        View My Work <i class="fa-solid fa-arrow-down"></i>
+      </a>
+    </div>
+  </section>
+
+  <main>
+
+    <!-- ── Gallery ─────────────────────────────────────────── -->
+    <section id="gallery" class="section gallery-section">
+      <div class="section-header">
+        <h2 class="section-title">My Work</h2>
+      </div>
+      <div class="gallery">
+
+        <!-- Left: image thumbnails -->
+        <div class="gallery-images">
+          <h3 class="gallery-col-title">Screenshots</h3>
+          <div class="thumb-list">
+            <img src="../images/dropsystemandskills.png"
+                 alt="Levels &amp; Stats + Drops + Skills"
+                 data-caption="&lt;span&gt;(The Greatest Adventurer)&lt;/span&gt;&lt;br&gt;RPG system — Experience, Stats, Drops, Skills and Enemies"
+                 class="thumb active-thumb">
+            <img src="../images/leveldesign.png"
+                 alt="Full Game creation"
+                 data-caption="&lt;span&gt;(The Return Of Rakshasa)&lt;/span&gt;&lt;br&gt;Full Game creation include logic and level design"
+                 class="thumb">
+            <img src="../images/buildingmodule.jpg"
+                 alt="Module creation expertise"
+                 data-caption="&lt;span&gt;(In Game Build Module)&lt;/span&gt;&lt;br&gt;Module creation expertise with UE guidelines"
+                 class="thumb">
+            <img src="../images/shooter.jpg"
+                 alt="Shooter project"
+                 data-caption="&lt;span&gt;(Shooter Minigame)&lt;/span&gt;&lt;br&gt;End to end project with limited timeframe"
+                 class="thumb">
+            <img src="../images/cleanblueprints.png"
+                 alt="Blueprint example"
+                 data-caption="&lt;span&gt;(Health Module)&lt;/span&gt;&lt;br&gt;High Blueprint readability and maintainability"
+                 class="thumb">
+          </div>
+        </div>
+
+        <!-- Centre: stage -->
+        <div class="gallery-stage">
+          <figure id="stage-image">
+            <img id="stage-img" src="../images/dropsystemandskills.png" alt="Levels &amp; Stats + Drops + Skills">
+            <figcaption id="stage-caption">
+              <span>(The Greatest Adventurer)</span>
+              RPG system — Experience, Stats, Drops, Skills and Enemies
+            </figcaption>
+          </figure>
+          <iframe id="stage-video" class="stage-hidden" src="" scrolling="no"
+                  frameborder="0" allowfullscreen title="Project video"></iframe>
+        </div>
+
+        <!-- Right: video thumbnails -->
+        <div class="gallery-videos">
+          <h3 class="gallery-col-title">Videos</h3>
+          <div class="thumb-list">
+            <img src="../images/greatestvideo1.png"
+                 alt="The Greatest Adventurer"
+                 data-embed="https://www.youtube.com/embed/KHVbWNFR2Iw?si=oTSYHnhABgaZOiDu"
+                 class="thumb">
+            <img src="../images/homesailors.png"
+                 alt="GGJ 2025"
+                 data-embed="https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7289190521606987777?compact=1"
+                 class="thumb">
+            <img src="../images/patrolnomore.png"
+                 alt="Patrol mini game"
+                 data-embed="https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7232137525807468544?compact=1"
+                 class="thumb">
+            <img src="../images/clicker.png"
+                 alt="Mobile Clicker game"
+                 data-embed="https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7229507655843610624?compact=1"
+                 class="thumb">
+            <img src="../images/raksahsavideo2.png"
+                 alt="The Return of Rakshasa"
+                 data-embed="https://www.youtube.com/embed/f2A1ewqIwRc?si=0_XW1tnY7ojM4NKH"
+                 class="thumb">
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── About ───────────────────────────────────────────── -->
+    <section id="about" class="section about-section">
+
+      <div class="about-header">
+        <img src="../images/solophoto.png" alt="Shon Saadon" class="about-photo">
+        <div class="about-text-block">
+          <h2>About me</h2>
+          <p class="about-text">
+            I am a dedicated backend developer with over <strong>four years of professional experience</strong>,
+            specializing in creating and maintaining robust, scalable systems for a company providing
+            <span class="label label-code">Slot Machine Games</span>.
+          </p>
+          <p class="about-text">
+            My role has honed my skills in database management, server-side logic, and API development,
+            ensuring seamless and efficient multiple operations for diverse clients.
+          </p>
+          <p class="about-text">
+            In addition to my backend expertise, I am a self-taught
+            <span class="label label-gamedesign">Unreal Engine developer</span> with a strong passion for
+            game development. Over the years, I have completed numerous projects showcasing my ability to
+            design, develop, and implement complex game mechanics and immersive environments.
+          </p>
+          <p class="about-text">
+            My portfolio highlights my proficiency in Unreal Engine, demonstrating my commitment to
+            continuous learning and innovation in
+            <span class="label label-leveldesign">both backend development and game design.</span>
+          </p>
+        </div>
+      </div>
+
+      <!-- Tab buttons -->
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="skills">
+          <i class="fa-solid fa-code"></i> Skills
+        </button>
+        <button class="tab-btn" data-tab="experience">
+          <i class="fa-solid fa-handshake-simple"></i> Experience
+        </button>
+      </div>
+
+      <!-- Skills tab -->
+      <div id="skills" class="tab-content active">
+        <div class="skills-grid">
+
+          <article class="skill-card">
+            <h3>Backend Developer</h3>
+            <div class="stars" style="--rating: 5" aria-label="5 out of 5 stars">★★★★★</div>
+            <div class="skill-tags">
+              <span class="tag" style="--tag-color: darkmagenta"><i class="fa-solid fa-crown"></i> PHP</span>
+              <span class="tag" style="--tag-color: darkorange"><i class="fa-solid fa-crown"></i> SQL</span>
+              <span class="tag" style="--tag-color: darkorange"><i class="fa-solid fa-crown"></i> Couchbase</span>
+            </div>
+            <p>Handling product maintaining, packages development, unit tests and DB migrations.
+               Experienced with RestAPI, Laravel framework and working close to product team.</p>
+          </article>
+
+          <article class="skill-card">
+            <h3>Unreal Engine Developer</h3>
+            <div class="stars" style="--rating: 4.5" aria-label="4.5 out of 5 stars">★★★★★</div>
+            <div class="skill-tags">
+              <span class="tag" style="--tag-color: darkcyan"><i class="fa-solid fa-crown"></i> Blueprints</span>
+              <span class="tag" style="--tag-color: #1a1aff">C++</span>
+            </div>
+            <p>Have multiple course certificates by
+               <a href="https://www.udemy.com/" target="_blank" rel="noopener">Udemy</a> and
+               <a href="https://www.gamedev.tv/" target="_blank" rel="noopener">GameDev</a>.
+               Creative approach to issues and dedicated to clean &amp; understandable code.</p>
+          </article>
+
+          <article class="skill-card">
+            <h3>Level &amp; Graphic Designer</h3>
+            <div class="stars" style="--rating: 4" aria-label="4 out of 5 stars">★★★★★</div>
+            <div class="skill-tags">
+              <span class="tag" style="--tag-color: grey"><i class="fa-solid fa-crown"></i> UE Editor</span>
+              <span class="tag" style="--tag-color: darkolivegreen">Photoshop</span>
+              <span class="tag" style="--tag-color: darkorchid">Niagara</span>
+            </div>
+            <p>Self-taught Level designer with related graphic education.
+               Familiar with puzzle-driven maps, narrative quests and game balancing.</p>
+          </article>
+
+        </div>
+      </div>
+
+      <!-- Experience tab -->
+      <div id="experience" class="tab-content">
+        <div class="timeline">
+
+          <article class="timeline-item">
+            <div class="timeline-icon"><i class="fa-solid fa-location-pin"></i></div>
+            <div class="timeline-body">
+              <h4>Technion</h4>
+              <p class="timeline-role">Software Practitioner</p>
+              <p class="timeline-date">10/2020 — 09/2021</p>
+              <p>Private lessons in various courses, including Java, React and Boolean.</p>
+            </div>
+          </article>
+
+          <article class="timeline-item">
+            <div class="timeline-icon"><i class="fa-solid fa-location-pin"></i></div>
+            <div class="timeline-body">
+              <h4>Machava Tova</h4>
+              <p class="timeline-role">EcoTech Teacher</p>
+              <p class="timeline-date">12/2020 — 08/2021</p>
+              <p>Teaching 15–18 year old students JavaScript, HTML and CSS (Ecommerce).</p>
+            </div>
+          </article>
+
+          <article class="timeline-item">
+            <div class="timeline-icon"><i class="fa-solid fa-location-pin"></i></div>
+            <div class="timeline-body">
+              <h4>Afcon</h4>
+              <p class="timeline-role">Simplex Programmer</p>
+              <p class="timeline-date">11/2021 — 02/2022</p>
+              <p>Building equations for handling fire sensors and flow switches to activate auto extinguishers.</p>
+            </div>
+          </article>
+
+          <article class="timeline-item">
+            <div class="timeline-icon"><i class="fa-solid fa-location-pin"></i></div>
+            <div class="timeline-body">
+              <h4>Bylith</h4>
+              <p class="timeline-role">Backend Developer</p>
+              <p class="timeline-date">02/2022 — 09/2024</p>
+              <p>PHP backend Developer. Handle databases, server logic, and application integration.</p>
+            </div>
+          </article>
+
+          <article class="timeline-item timeline-item--current">
+            <div class="timeline-icon"><i class="fa-solid fa-location-pin"></i></div>
+            <div class="timeline-body">
+              <h4>Sciplay</h4>
+              <p class="timeline-role">Server Engineer</p>
+              <p class="timeline-date">09/2024 — Current <span class="badge-current">Now</span></p>
+              <p>Creating features &amp; game logics, endpoints, tools and handling SQL / Couchbase documents.</p>
+            </div>
+          </article>
+
+          <article class="timeline-item timeline-item--current">
+            <div class="timeline-icon"><i class="fa-solid fa-location-pin"></i></div>
+            <div class="timeline-body">
+              <h4>Freelance</h4>
+              <p class="timeline-role">UE5 Developer</p>
+              <p class="timeline-date">2020 — Forever <span class="badge-current">Now</span></p>
+              <p>Creating what I love.</p>
+            </div>
+          </article>
+
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <p>All rights reserved to Shon Saadon 2025.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
