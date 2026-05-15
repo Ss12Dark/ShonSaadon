@@ -375,10 +375,30 @@ body::before {
 
 /* Responsive */
 @media (max-width: 768px) {
-  .vsection { padding: 3rem 5%; }
-  .video-grid { grid-template-columns: 1fr; gap: 1.5rem; }
-  .vhero { padding: 6rem 5% 3rem; }
-  .vhero-back { left: 5%; }
-  .pill-nav a { font-size: 0.8rem; padding: 0.4rem 0.9rem; }
-  .vsection-title { flex-direction: column; gap: 0.4rem; }
+  .vsection        { padding: 2.5rem 5%; }
+  .vsection-title  { flex-direction: column; gap: 0.3rem; }
+  .vsection-desc   { font-size: 0.9rem; }
+
+  .video-grid { grid-template-columns: 1fr; gap: 1.25rem; }
+
+  /* Cap tall 9:16 cards so they don't dominate the screen on phone */
+  .video-wrapper {
+    aspect-ratio: unset;
+    height: min(72vw, 340px);
+  }
+
+  .vhero          { padding: 5.5rem 5% 2.5rem; }
+  .vhero-back     { top: 80px; left: 5%; }
+  .vhero-subtitle { letter-spacing: 0.18em; font-size: clamp(0.8rem, 2.5vw, 1.2rem); }
+  .vhero-tagline  { font-size: 0.9rem; margin-bottom: 1.8rem; }
+
+  .pill-nav       { gap: 0.5rem; }
+  .pill-nav a     { font-size: 0.75rem; padding: 0.38rem 0.85rem; }
+}
+
+@media (max-width: 480px) {
+  .video-wrapper { height: min(80vw, 300px); }
+  .video-title   { font-size: 0.92rem; }
+  .video-info    { padding: 1rem; }
+  .vsection-num  { display: none; }
 }
