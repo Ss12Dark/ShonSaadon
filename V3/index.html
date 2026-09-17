@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Untitled</title>
+  <link rel="stylesheet" href="style.css">
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
+</head>
+<body>
+  <div class="smoke-layer" aria-hidden="true">
+    <span class="smoke-layer__cloud smoke-layer__cloud--1"></span>
+    <span class="smoke-layer__cloud smoke-layer__cloud--2"></span>
+    <span class="smoke-layer__cloud smoke-layer__cloud--3"></span>
+    <span class="smoke-layer__cloud smoke-layer__cloud--4"></span>
+  </div>
+  <div class="main-container">
+    <img src="background images/main.png" alt="Background Image" class="background-image">
+    <span class="glow glow--top-left"></span>
+    <div id="character-viewer" class="character-viewer"></div>
+    <div id="inventory" class="inventory" aria-label="Inventory"></div>
+  </div>
+  <script type="module" src="script.js"></script>
+  <script type="module" src="inventory.js"></script>
+</body>
+</html>
