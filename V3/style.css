@@ -504,3 +504,46 @@ html, body {
   text-align: right;
 }
 
+/* Floating top nav — fixed to the viewport (not the scene image) since it's
+   page chrome, not part of the game scene. Buttons are currently inert
+   placeholders; wire up their click handlers once each screen exists. */
+.main-nav {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 0.9em;
+  padding: 0.6em 1.4em;
+  background: rgba(10, 10, 10, 0.5);
+  border: 1px solid rgba(197, 179, 130, 0.5);
+  border-radius: 999px;
+  backdrop-filter: blur(6px);
+  font-family: Georgia, 'Times New Roman', serif;
+}
+
+.main-nav__link {
+  background: none;
+  border: none;
+  color: #e8dcc4;
+  font-size: clamp(12px, 1.1vw, 16px);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  padding: 0.2em 0.3em;
+  transition: color 0.2s ease, text-shadow 0.2s ease;
+}
+
+.main-nav__link:hover,
+.main-nav__link:focus-visible {
+  color: #ffd76a;
+  text-shadow: 0 0 8px rgba(255, 215, 106, 0.6);
+}
+
+.main-nav__divider {
+  color: rgba(197, 179, 130, 0.4);
+  font-size: clamp(11px, 1vw, 14px);
+}
+
