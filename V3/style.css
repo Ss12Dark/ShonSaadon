@@ -118,9 +118,25 @@ html, body {
   animation: glow-breathe 3s ease-in-out infinite;
 }
 
+.glow2 {
+  position: absolute;
+  width: 25%;
+  height: 85%;
+  background: radial-gradient(circle, rgba(197, 179, 130, 0.6) 0%, rgba(197, 179, 130, 0.01) 45%, transparent 70%);
+  filter: blur(2vw);
+  pointer-events: none;
+  z-index: 2;
+  animation: glow-breathe 5s ease-in-out infinite;
+}
+
 .glow--top-left {
   top: 1%;
   left: 1%;
+}
+
+.glow--mid {
+  top: -10%;
+  left: 37.5%;
 }
 
 @keyframes glow-breathe {
@@ -186,7 +202,8 @@ html, body {
   position: relative;
   width: 100%;
   height: 100%;
-  border: 1px solid rgba(120, 72, 40, 0.45);
+  max-width: 100%;
+  max-height: 100%;
   background: rgba(20, 16, 12, 0.35);
   box-sizing: border-box;
 }
@@ -200,6 +217,7 @@ html, body {
   height: 150%;
   pointer-events: none;
   user-select: none;
+  -webkit-user-drag: none;
 }
 
 .inventory-item {
@@ -222,8 +240,267 @@ html, body {
   display: block;
   width: 100%;
   height: 100%;
-  background: #ffffff;
   object-fit: cover;
   pointer-events: none;
   user-select: none;
+  -webkit-user-drag: none;
 }
+
+.flaoting-div {
+  position: absolute;
+  z-index: 5;
+  padding: 1.5%;
+  box-sizing: border-box;
+  background: rgba(10, 10, 10, 0.35);
+  /* border: 1px solid rgba(255, 0, 0, 0.966); */
+}
+
+.hero-details {
+  right: 76%;
+  bottom: 10%;
+  width: 21%;
+  height: 65%;
+}
+
+.build-analysis {
+  bottom: 13%;
+  right: 3%;
+  width: 21%;
+  height: 36%;
+}
+
+/* Hero/item detail panels: text sizes use cqw (container-query width) so
+   they scale with the panel itself — same "stays in place, scales with the
+   scene" idea as .glow/.inventory, just applied at the text level. */
+.flaoting-div {
+  container-type: inline-size;
+  overflow-y: auto;
+  overflow-x: hidden;
+  color: #e8dcc4;
+  font-family: Georgia, 'Times New Roman', serif;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(197, 179, 130, 0.5) rgba(0, 0, 0, 0.3);
+}
+
+.flaoting-div::-webkit-scrollbar {
+  width: 6px;
+}
+
+.flaoting-div::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.flaoting-div::-webkit-scrollbar-thumb {
+  background: rgba(197, 179, 130, 0.5);
+  border-radius: 3px;
+}
+
+.hero-vitals {
+  display: flex;
+  flex-direction: column;
+  gap: 3cqw;
+  padding-bottom: 4cqw;
+  margin-bottom: 4cqw;
+  border-bottom: 1px solid rgba(197, 179, 130, 0.3);
+}
+
+.hero-vital__line {
+  display: block;
+  font-size: 9cqw;
+  font-weight: bold;
+  color: #d9c48a;
+  letter-spacing: 0.02em;
+}
+
+.hero-vital__caption {
+  display: block;
+  font-size: 5.5cqw;
+  color: rgba(232, 220, 196, 0.65);
+  font-style: italic;
+}
+
+.hero-heading {
+  font-size: 8.5cqw;
+  font-weight: normal;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #c5b382;
+  margin: 0cqw 0 3cqw;
+  border-bottom: 1px solid rgba(197, 179, 130, 0.25);
+  padding-bottom: 1.5cqw;
+}
+
+/* Just the hero-details panel's headings — build-analysis keeps the larger size. */
+.hero-details .hero-heading {
+  font-size: 7cqw;
+}
+
+.hero-stats {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 3.5cqw;
+}
+
+.hero-stat__row {
+  display: flex;
+  align-items: center;
+  gap: 2cqw;
+}
+
+.hero-stat__icon {
+  font-size: 6cqw;
+  flex-shrink: 0;
+}
+
+.hero-stat__name {
+  font-size: 6cqw;
+  font-weight: bold;
+  flex: 1;
+}
+
+.hero-stat__grade {
+  font-size: 6cqw;
+  font-weight: bold;
+  min-width: 2.4em;
+  text-align: right;
+}
+
+.hero-stat__grade--s {
+  color: #ffd76a;
+  text-shadow: 0 0 6px rgba(255, 215, 106, 0.6);
+}
+
+.hero-stat__grade--a-plus {
+  color: #bfe6a8;
+}
+
+.hero-stat__grade--a {
+  color: #9fc8e8;
+}
+
+.hero-stat__desc {
+  font-size: 5cqw;
+  line-height: 1.4;
+  color: rgba(232, 220, 196, 0.75);
+  margin-top: 0.5cqw;
+}
+
+.hero-tags {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5cqw;
+}
+
+.hero-tags li {
+  font-size: 4.8cqw;
+  padding: 1.4cqw 2.8cqw;
+  border: 1px solid rgba(120, 72, 40, 0.5);
+  border-radius: 2px;
+  background: rgba(120, 72, 40, 0.15);
+  color: rgba(232, 220, 196, 0.85);
+  white-space: nowrap;
+}
+
+/* Hover tooltip showing an item's stats — one shared element, repositioned per item. */
+.inventory-tooltip {
+  position: fixed;
+  transform: translate(-50%, calc(-100% - 10px));
+  z-index: 2000;
+  pointer-events: none;
+  background: rgba(10, 8, 6, 0.92);
+  border: 1px solid rgba(197, 179, 130, 0.5);
+  color: #e8dcc4;
+  font-family: Georgia, 'Times New Roman', serif;
+  padding: 8px 12px;
+  border-radius: 3px;
+  max-width: 260px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.inventory-tooltip__title {
+  font-size: 16px;
+  font-weight: bold;
+  color: #d9c48a;
+  margin-bottom: 3px;
+}
+
+.inventory-tooltip__stats {
+  font-size: 14px;
+  color: rgba(232, 220, 196, 0.85);
+  margin-bottom: 3px;
+}
+
+.inventory-tooltip__zone {
+  font-size: 12px;
+  font-style: italic;
+  color: rgba(197, 179, 130, 0.8);
+}
+
+/* Build Analysis panel content (rendered into #build-analysis, a .flaoting-div,
+   so it inherits the cqw text scaling and scrollbar from that shared rule). */
+.build-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 3cqw;
+  margin-bottom: 4cqw;
+}
+
+.build-bar__head {
+  display: flex;
+  justify-content: space-between;
+  font-size: 5.5cqw;
+  margin-bottom: 1cqw;
+}
+
+.build-bar__track {
+  width: 100%;
+  height: 2.2cqw;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(197, 179, 130, 0.3);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.build-bar__fill {
+  height: 100%;
+  background: linear-gradient(90deg, rgba(197, 179, 130, 0.7), rgba(255, 215, 106, 0.9));
+  transition: width 0.3s ease;
+}
+
+.build-description {
+  font-size: 5.5cqw;
+  line-height: 1.4;
+  font-style: italic;
+  color: rgba(232, 220, 196, 0.85);
+  margin-bottom: 4cqw;
+}
+
+.build-bonus-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 2cqw;
+}
+
+.build-bonus-list li {
+  display: flex;
+  justify-content: space-between;
+  gap: 2cqw;
+  font-size: 5cqw;
+  border-bottom: 1px dashed rgba(197, 179, 130, 0.2);
+  padding-bottom: 1.5cqw;
+}
+
+.build-bonus-list__name {
+  font-weight: bold;
+  color: #d9c48a;
+}
+
+.build-bonus-list__stats {
+  color: rgba(232, 220, 196, 0.7);
+  text-align: right;
+}
+

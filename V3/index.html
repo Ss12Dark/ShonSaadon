@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,6 +15,7 @@
     }
   </script>
 </head>
+
 <body>
   <div class="smoke-layer" aria-hidden="true">
     <span class="smoke-layer__cloud smoke-layer__cloud--1"></span>
@@ -21,13 +23,100 @@
     <span class="smoke-layer__cloud smoke-layer__cloud--3"></span>
     <span class="smoke-layer__cloud smoke-layer__cloud--4"></span>
   </div>
+  </nav>
   <div class="main-container">
+
     <img src="background images/main.png" alt="Background Image" class="background-image">
+
     <span class="glow glow--top-left"></span>
+    <span class="glow2 glow--mid"></span>
     <div id="character-viewer" class="character-viewer"></div>
+    <div id="hero-details" class="flaoting-div hero-details" aria-label="Hero Details">
+      <div class="hero-vitals">
+        <div class="hero-vital">
+          <span class="hero-vital__line">Level: 5</span>
+          <span class="hero-vital__caption">Years of Experience</span>
+        </div>
+        <div class="hero-vital">
+          <span class="hero-vital__line">Health: 29</span>
+          <span class="hero-vital__caption">Years of Age</span>
+        </div>
+        <div class="hero-vital">
+          <span class="hero-vital__line">Mana: &infin;</span>
+          <span class="hero-vital__caption">Always learning. Always building.</span>
+        </div>
+      </div>
+
+      <h3 class="hero-heading">Stats</h3>
+      <ul class="hero-stats">
+        <li class="hero-stat">
+          <div class="hero-stat__row">
+            <span class="hero-stat__icon">&#9876;</span>
+            <span class="hero-stat__name">Engineering</span>
+            <span class="hero-stat__grade hero-stat__grade--s">S</span>
+          </div>
+          <p class="hero-stat__desc">Turns problems into working systems, from backend architecture to gameplay mechanics.</p>
+        </li>
+        <li class="hero-stat">
+          <div class="hero-stat__row">
+            <span class="hero-stat__icon">&#9876;</span>
+            <span class="hero-stat__name">Game Development</span>
+            <span class="hero-stat__grade hero-stat__grade--a-plus">A+</span>
+          </div>
+          <p class="hero-stat__desc">4+ years of building games with Unreal Engine, from quick prototypes to multiplayer systems.</p>
+        </li>
+        <li class="hero-stat">
+          <div class="hero-stat__row">
+            <span class="hero-stat__icon">&#129504;</span>
+            <span class="hero-stat__name">Problem Solving</span>
+            <span class="hero-stat__grade hero-stat__grade--s">S</span>
+          </div>
+          <p class="hero-stat__desc">Enjoys digging into difficult bugs, understanding how things actually work, and finding a way forward.</p>
+        </li>
+        <li class="hero-stat">
+          <div class="hero-stat__row">
+            <span class="hero-stat__icon">&#10024;</span>
+            <span class="hero-stat__name">Creativity</span>
+            <span class="hero-stat__grade hero-stat__grade--a">A</span>
+          </div>
+          <p class="hero-stat__desc">Likes experimenting, building unusual mechanics, and turning ideas into playable experiences.</p>
+        </li>
+        <li class="hero-stat">
+          <div class="hero-stat__row">
+            <span class="hero-stat__icon">&#129302;</span>
+            <span class="hero-stat__name">AI &amp; Automation</span>
+            <span class="hero-stat__grade hero-stat__grade--a-plus">A+</span>
+          </div>
+          <p class="hero-stat__desc">Uses AI as a development partner with Claude Code, MCP, custom tools, and AI-assisted workflows.</p>
+        </li>
+        <li class="hero-stat">
+          <div class="hero-stat__row">
+            <span class="hero-stat__icon">&#129309;</span>
+            <span class="hero-stat__name">Teamwork</span>
+            <span class="hero-stat__grade hero-stat__grade--a">A</span>
+          </div>
+          <p class="hero-stat__desc">Comfortable working with programmers, artists, designers, and figuring things out together.</p>
+        </li>
+      </ul>
+
+      <h3 class="hero-heading">Specializations</h3>
+      <ul class="hero-tags">
+        <li>Unreal Engine 5</li>
+        <li>Blueprints</li>
+        <li>PHP</li>
+        <li>Fullstack</li>
+        <li>Multiplayer</li>
+        <li>Game Systems</li>
+        <li>Claude Code</li>
+        <li>AI Knowledge</li>
+        <li>MCP & Skills</li>
+      </ul>
+    </div>
     <div id="inventory" class="inventory" aria-label="Inventory"></div>
+    <div id="build-analysis" class="flaoting-div build-analysis" aria-label="Build Analysis"></div>
   </div>
   <script type="module" src="script.js"></script>
   <script type="module" src="inventory.js"></script>
 </body>
+
 </html>
