@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Untitled</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="skills.css">
   <script type="importmap">
     {
       "imports": {
@@ -24,13 +25,13 @@
     <span class="smoke-layer__cloud smoke-layer__cloud--4"></span>
   </div>
   <nav id="main-nav" class="main-nav" aria-label="Primary">
-    <button type="button" class="main-nav__link">Hero</button>
+    <button type="button" class="main-nav__link" data-target="hero">Hero</button>
     <span class="main-nav__divider" aria-hidden="true">|</span>
-    <button type="button" class="main-nav__link">Skills</button>
+    <button type="button" class="main-nav__link" data-target="skills">Skills</button>
     <span class="main-nav__divider" aria-hidden="true">|</span>
-    <button type="button" class="main-nav__link">Map</button>
+    <button type="button" class="main-nav__link" data-target="map">Map</button>
   </nav>
-  <div class="main-container">
+  <div id="hero" class="main-container is-active">
 
     <img src="background images/main.png" alt="Background Image" class="background-image">
 
@@ -99,7 +100,7 @@
           <div class="hero-stat__row">
             <span class="hero-stat__icon">&#129309;</span>
             <span class="hero-stat__name">Teamwork</span>
-            <span class="hero-stat__grade hero-stat__grade--a">A</span>
+            <span class="hero-stat__grade hero-stat__grade--s">S</span>
           </div>
           <p class="hero-stat__desc">Comfortable working with programmers, artists, designers, and figuring things out together.</p>
         </li>
@@ -121,8 +122,110 @@
     <div id="inventory" class="inventory" aria-label="Inventory"></div>
     <div id="build-analysis" class="flaoting-div build-analysis" aria-label="Build Analysis"></div>
   </div>
+  <div id="skills" class="main-container">
+    <img src="background images/skills.png" alt="Background Image" class="background-image">
+  </div>
+  <div id="map" class="main-container">
+    <img src="background images/map.png" alt="Background Image" class="background-image">
+
+    <!-- Journey markers — one per workplace, aligned to the path nodes
+         already drawn into map.png. To add/remove a stop, duplicate/delete a
+         .map-marker block here and its matching --marker-x/--marker-y
+         position class in style.css (under "MAP JOURNEY MARKERS"). -->
+    <div class="map-marker marker--technion">
+      <button type="button" class="map-marker__hotspot" aria-expanded="false" aria-describedby="marker-technion-tip">
+        <span class="sr-only">Technion</span>
+      </button>
+      <span class="map-marker__label">Technion</span>
+      <div class="map-marker__tooltip" id="marker-technion-tip" role="tooltip">
+        <h4 class="map-marker__title">Technion</h4>
+        <p class="map-marker__role">Software Practitioner</p>
+        <p class="map-marker__date">10/2020 — 09/2021</p>
+        <p class="map-marker__desc">Private lessons in various courses, including Java, React and Boolean.</p>
+      </div>
+    </div>
+
+    <div class="map-marker marker--machava-tova">
+      <button type="button" class="map-marker__hotspot" aria-expanded="false" aria-describedby="marker-machava-tip">
+        <span class="sr-only">Machava Tova</span>
+      </button>
+      <span class="map-marker__label">Machava Tova</span>
+      <div class="map-marker__tooltip" id="marker-machava-tip" role="tooltip">
+        <h4 class="map-marker__title">Machava Tova</h4>
+        <p class="map-marker__role">EcoTech Teacher</p>
+        <p class="map-marker__date">12/2020 — 08/2021</p>
+        <p class="map-marker__desc">Teaching 15–18 year old students JavaScript, HTML and CSS (Ecommerce).</p>
+      </div>
+    </div>
+
+    <div class="map-marker marker--afcon">
+      <button type="button" class="map-marker__hotspot" aria-expanded="false" aria-describedby="marker-afcon-tip">
+        <span class="sr-only">Afcon</span>
+      </button>
+      <span class="map-marker__label">Afcon</span>
+      <div class="map-marker__tooltip" id="marker-afcon-tip" role="tooltip">
+        <h4 class="map-marker__title">Afcon</h4>
+        <p class="map-marker__role">Simplex Programmer</p>
+        <p class="map-marker__date">11/2021 — 02/2022</p>
+        <p class="map-marker__desc">Building equations for handling fire sensors and flow switches to activate auto extinguishers.</p>
+      </div>
+    </div>
+
+    <div class="map-marker marker--bylith">
+      <button type="button" class="map-marker__hotspot" aria-expanded="false" aria-describedby="marker-bylith-tip">
+        <span class="sr-only">Bylith</span>
+      </button>
+      <span class="map-marker__label">Bylith</span>
+      <div class="map-marker__tooltip" id="marker-bylith-tip" role="tooltip">
+        <h4 class="map-marker__title">Bylith</h4>
+        <p class="map-marker__role">Backend Developer</p>
+        <p class="map-marker__date">02/2022 — 09/2024</p>
+        <p class="map-marker__desc">PHP backend developer. Handled databases, server logic, and application integration.</p>
+      </div>
+    </div>
+
+    <div class="map-marker map-marker--current marker--sciplay">
+      <button type="button" class="map-marker__hotspot" aria-expanded="false" aria-describedby="marker-sciplay-tip">
+        <span class="sr-only">Sciplay</span>
+      </button>
+      <span class="map-marker__label">Sciplay</span>
+      <div class="map-marker__tooltip" id="marker-sciplay-tip" role="tooltip">
+        <h4 class="map-marker__title">Sciplay</h4>
+        <p class="map-marker__role">Server Engineer</p>
+        <p class="map-marker__date">09/2024 — Current</p>
+        <p class="map-marker__desc">Creating features &amp; game logic, endpoints, tools, and handling SQL / Couchbase documents.</p>
+      </div>
+    </div>
+
+    <div class="map-marker map-marker--current map-marker--edge-right marker--freelance">
+      <button type="button" class="map-marker__hotspot" aria-expanded="false" aria-describedby="marker-freelance-tip">
+        <span class="sr-only">Freelance</span>
+      </button>
+      <span class="map-marker__label">Freelance</span>
+      <div class="map-marker__tooltip" id="marker-freelance-tip" role="tooltip">
+        <h4 class="map-marker__title">Freelance</h4>
+        <p class="map-marker__role">UE5 Developer</p>
+        <p class="map-marker__date">2020 — Forever</p>
+        <p class="map-marker__desc">Creating what I love.</p>
+      </div>
+    </div>
+
+    <div class="map-marker map-marker--question marker--question">
+      <button type="button" class="map-marker__hotspot" aria-expanded="false" aria-describedby="marker-question-tip">
+        <span class="sr-only">Unknown Territory</span>
+      </button>
+      <span class="map-marker__label">?</span>
+      <div class="map-marker__tooltip" id="marker-question-tip" role="tooltip">
+        <h4 class="map-marker__title">Unknown Territory</h4>
+        <p class="map-marker__desc">The next chapter hasn't been written yet — maybe it's with you. If you've got a project, an opportunity, or just want to say hi, I'd love to hear from you.</p>
+        <a class="map-marker__contact" href="mailto:saadonshon@gmail.com">Contact Me</a>
+      </div>
+    </div>
+  </div>
   <script type="module" src="script.js"></script>
   <script type="module" src="inventory.js"></script>
+  <script type="module" src="nav.js"></script>
+  <script type="module" src="map.js"></script>
 </body>
 
 </html>
