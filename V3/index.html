@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Untitled</title>
+  <title>Shon RPG</title>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="skills.css">
   <script type="importmap">
@@ -124,6 +124,11 @@
   </div>
   <div id="skills" class="main-container">
     <img src="background images/skills.png" alt="Background Image" class="background-image">
+
+    <!-- Skill tree: nodes + panels are built entirely by skills-tree.js from
+         the SKILL_NODES data array (position, connections, and project
+         content all live there — see that file to edit/add/remove nodes). -->
+    <div id="skill-tree" class="skill-tree" aria-label="Project skill tree"></div>
   </div>
   <div id="map" class="main-container">
     <img src="background images/map.png" alt="Background Image" class="background-image">
@@ -217,7 +222,7 @@
       <span class="map-marker__label">?</span>
       <div class="map-marker__tooltip" id="marker-question-tip" role="tooltip">
         <h4 class="map-marker__title">Unknown Territory</h4>
-        <p class="map-marker__desc">The next chapter hasn't been written yet — maybe it's with you. If you've got a project, an opportunity, or just want to say hi, I'd love to hear from you.</p>
+        <p class="map-marker__desc">Unknown chapter — maybe it's with you. I'd love to hear it.</p>
         <a class="map-marker__contact" href="mailto:saadonshon@gmail.com">Contact Me</a>
       </div>
     </div>
@@ -226,6 +231,7 @@
   <script type="module" src="inventory.js"></script>
   <script type="module" src="nav.js"></script>
   <script type="module" src="map.js"></script>
+  <script type="module" src="skills-tree.js"></script>
 </body>
 
 </html>

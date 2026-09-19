@@ -1,0 +1,234 @@
+/* Skills screen — RPG project skill tree. Scoped entirely to #skills; node
+   data (position, connections, content) lives in skills-tree.js. */
+
+.skill-tree {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+}
+
+.skill-tree__lines {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.skill-tree__line {
+  stroke: rgba(197, 179, 130, 0.35);
+  stroke-width: 2;
+  transition: stroke 0.25s ease, filter 0.25s ease;
+}
+
+.skill-tree__line.is-lit {
+  stroke: rgba(255, 215, 106, 0.9);
+  filter: drop-shadow(0 0 4px rgba(255, 215, 106, 0.7));
+}
+
+.skill-node {
+  position: absolute;
+  left: var(--node-x, 50%);
+  top: var(--node-y, 50%);
+  transform: translate(-50%, -50%);
+  z-index: 5;
+  font-family: Georgia, 'Times New Roman', serif;
+}
+
+.skill-node__hotspot {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(28px, 4vw, 46px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, rgba(60, 50, 35, 0.9), rgba(10, 8, 6, 0.95));
+  border: 2px solid rgba(197, 179, 130, 0.55);
+  color: #d9c48a;
+  font-size: clamp(12px, 1.5vw, 19px);
+  cursor: pointer;
+  padding: 0;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+.skill-node__hotspot:hover,
+.skill-node__hotspot:focus-visible,
+.skill-node.is-open .skill-node__hotspot {
+  border-color: #ffd76a;
+  box-shadow: 0 0 14px 3px rgba(255, 215, 106, 0.5);
+  transform: scale(1.12);
+}
+
+.skill-node--highlight .skill-node__hotspot {
+  border-color: rgba(255, 215, 106, 0.8);
+  box-shadow: 0 0 8px 1px rgba(255, 215, 106, 0.35);
+}
+
+.skill-node__icon {
+  line-height: 1;
+}
+
+.skill-node__label {
+  position: absolute;
+  top: calc(100% + 0.3em);
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-size: clamp(9px, 0.95vw, 12px);
+  letter-spacing: 0.03em;
+  color: #d9c48a;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9), 0 0 6px rgba(0, 0, 0, 0.9);
+  pointer-events: none;
+}
+
+/* Project panel — position depends on modifier classes set per node in
+   skills-tree.js (panelSideClass/panelValignClass), computed from the
+   node's own x/y so panels never run off the screen. --panel-x/--panel-y
+   hold the static open-direction offsets; only the X part animates. */
+.skill-node--valign-center .skill-panel {
+  top: 50%;
+  --panel-y: -50%;
+}
+
+.skill-node--valign-top .skill-panel {
+  top: 0;
+  --panel-y: 0%;
+}
+
+.skill-node--valign-bottom .skill-panel {
+  bottom: 0;
+  --panel-y: 0%;
+}
+
+.skill-node--panel-right .skill-panel {
+  left: calc(100% + 1.4em);
+  --panel-x: -6px;
+}
+
+.skill-node--panel-left .skill-panel {
+  right: calc(100% + 1.4em);
+  --panel-x: 6px;
+}
+
+.skill-panel {
+  position: absolute;
+  width: clamp(240px, 26vw, 360px);
+  padding: 1em 1.1em;
+  background: rgba(10, 8, 6, 0.95);
+  border: 1px solid rgba(197, 179, 130, 0.55);
+  border-radius: 6px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6), inset 0 0 20px rgba(197, 179, 130, 0.05);
+  color: #e8dcc4;
+  font-family: Georgia, 'Times New Roman', serif;
+  transform: translate(var(--panel-x, 0), var(--panel-y, 0));
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.22s ease, transform 0.22s ease, visibility 0.22s;
+  z-index: 20;
+}
+
+.skill-node:hover .skill-panel,
+.skill-node:focus-within .skill-panel,
+.skill-node.is-open .skill-panel {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translate(0, var(--panel-y, 0));
+}
+
+.skill-panel__title {
+  font-size: 1.15em;
+  font-weight: bold;
+  color: #d9c48a;
+  margin-bottom: 0.35em;
+  padding-bottom: 0.35em;
+  border-bottom: 1px solid rgba(197, 179, 130, 0.25);
+}
+
+.skill-panel__desc {
+  font-size: 0.86em;
+  line-height: 1.5;
+  color: rgba(232, 220, 196, 0.85);
+  margin-bottom: 0.6em;
+}
+
+.skill-panel__bullets {
+  list-style: none;
+  margin: 0 0 0.2em;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3em;
+}
+
+.skill-panel__bullets li {
+  font-size: 0.8em;
+  line-height: 1.4;
+  color: rgba(232, 220, 196, 0.75);
+  padding-left: 1.1em;
+  position: relative;
+}
+
+.skill-panel__bullets li::before {
+  content: '\2726';
+  position: absolute;
+  left: 0;
+  color: #c5b382;
+  font-size: 0.85em;
+}
+
+/* Placeholder looping media — swap for
+   <img class="skill-panel__media" src="path/to.gif" alt="..."> later. */
+.skill-panel__media {
+  margin-top: 0.8em;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 4px;
+  border: 1px solid rgba(197, 179, 130, 0.4);
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(40, 34, 24, 0.9), rgba(15, 13, 10, 0.95));
+}
+
+.skill-panel__media::before {
+  content: '';
+  position: absolute;
+  inset: -50%;
+  background: repeating-linear-gradient(45deg, rgba(197, 179, 130, 0.12) 0 12px, transparent 12px 24px);
+  animation: skill-media-scroll 3s linear infinite;
+}
+
+@keyframes skill-media-scroll {
+  from { transform: translate(0, 0); }
+  to   { transform: translate(24px, 24px); }
+}
+
+.skill-panel__media-label {
+  position: relative;
+  z-index: 1;
+  font-size: 0.72em;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(232, 220, 196, 0.8);
+  background: rgba(0, 0, 0, 0.5);
+  padding: 0.3em 0.6em;
+  border-radius: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skill-panel__media::before {
+    animation: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .skill-panel {
+    width: clamp(180px, 62vw, 300px);
+  }
+}
