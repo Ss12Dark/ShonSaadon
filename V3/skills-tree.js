@@ -21,7 +21,7 @@
 const SKILL_NODES = [
   {
     id: 'n1',
-    x: 10,
+    x: 12,
     y: 50,
     parents: [],
     root: true,
@@ -32,7 +32,7 @@ const SKILL_NODES = [
   },
   {
     id: 'n2',
-    x: 20,
+    x: 25,
     y: 60,
     parents: ['n1'],
     title: 'Mini projects (2020)',
@@ -42,7 +42,7 @@ const SKILL_NODES = [
   },
   {
     id: 'n3',
-    x: 25,
+    x: 30,
     y: 40,
     parents: ['n1'],
     title: 'Final Reversal (2023)',
@@ -52,7 +52,7 @@ const SKILL_NODES = [
   },
   {
     id: 'n4',
-    x: 30,
+    x: 37,
     y: 60,
     parents: ['n2'],
     title: 'Worlds clicker (2021)',
@@ -62,7 +62,7 @@ const SKILL_NODES = [
   },
   {
     id: 'n5',
-    x: 35,
+    x: 42,
     y: 40,
     parents: ['n3'],
     title: 'Guns N Ropses (2024)',
@@ -72,7 +72,7 @@ const SKILL_NODES = [
   },
   {
     id: 'n6',
-    x: 40,
+    x: 48,
     y: 60,
     parents: ['n4'],
     title: 'Patrol no more (2023)',
@@ -82,7 +82,7 @@ const SKILL_NODES = [
   },
   {
     id: 'n7',
-    x: 45,
+    x: 53,
     y: 40,
     parents: ['n5'],
     title: 'Home Sailors (2025)',
@@ -92,8 +92,8 @@ const SKILL_NODES = [
   },
   {
     id: 'n8',
-    x: 50,
-    y: 80,
+    x: 57,
+    y: 76,
     root: true,
     parents: ['n4'],
     title: 'The Greatest Adventurer (2022 - 2024)',
@@ -103,7 +103,7 @@ const SKILL_NODES = [
   },
   {
     id: 'n9',
-    x: 55,
+    x: 63,
     y: 40,
     parents: ['n7'],
     title: 'The Mask Tester (2026)',
@@ -114,7 +114,7 @@ const SKILL_NODES = [
   },
   {
     id: 'n10',
-    x: 50,
+    x: 58,
     y: 60,
     parents: ['n6'],
     title: 'SoundShift (2025)',
@@ -124,7 +124,7 @@ const SKILL_NODES = [
   },
   {
     id: 'n11',
-    x: 60,
+    x: 70,
     y: 60,
     parents: ['n6'],
     title: 'Flipped Ghost (2026)',
@@ -134,7 +134,7 @@ const SKILL_NODES = [
   },
   {
     id: 'n12',
-    x: 70,
+    x: 80,
     y: 50,
     parents: ['n9', 'n11'],
     root: true,

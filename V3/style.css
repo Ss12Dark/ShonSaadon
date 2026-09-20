@@ -691,6 +691,8 @@ html, body {
   border: 1px solid rgba(197, 179, 130, 0.5);
   border-radius: 4px;
   color: #e8dcc4;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(13px, 1.2vw, 17px);
   text-align: center;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
   opacity: 0;
