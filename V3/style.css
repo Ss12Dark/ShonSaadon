@@ -17,13 +17,19 @@ html, body {
    positioning + shrink-to-fit sizing (same centered-on-the-image sizing as
    before, just no longer dependent on body's flex layout since fixed-position
    elements sit outside normal flow). nav.js toggles .is-active to cross-fade
-   between them; only the active one is interactive. */
+   between them; only the active one is interactive.
+   Note: the transform below (needed for centering) creates a stacking
+   context on its own, regardless of z-index — so anything popup-like that
+   needs to render above #main-nav (map tooltips, skill panels, ...) can't
+   just use a high z-index while nested in here; it has to be moved to
+   <body> and positioned with JS instead (see map.js / skills-tree.js).
+   Relative screen order otherwise follows DOM order (hero, skills, map),
+   which only matters mid cross-fade. */
 .main-container {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 1;
   max-width: 100vw;
   max-height: 100vh;
   border: 1px solid rgba(197, 179, 130, 0.4);
@@ -548,6 +554,10 @@ html, body {
 }
 
 .main-nav__link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15em;
   background: none;
   border: none;
   color: #e8dcc4;
@@ -559,6 +569,13 @@ html, body {
   transition: color 0.2s ease, text-shadow 0.2s ease;
 }
 
+.main-nav__sublabel {
+  font-size: 0.62em;
+  letter-spacing: 0.06em;
+  text-transform: none;
+  color: rgba(197, 179, 130, 0.75);
+}
+
 .main-nav__link:hover,
 .main-nav__link:focus-visible {
   color: #ffd76a;
@@ -568,6 +585,12 @@ html, body {
 .main-nav__link.is-current {
   color: #ffd76a;
   text-shadow: 0 0 8px rgba(255, 215, 106, 0.6);
+}
+
+.main-nav__link:hover .main-nav__sublabel,
+.main-nav__link:focus-visible .main-nav__sublabel,
+.main-nav__link.is-current .main-nav__sublabel {
+  color: rgba(255, 215, 106, 0.75);
 }
 
 .main-nav__divider {
@@ -601,7 +624,6 @@ html, body {
   left: var(--marker-x, 50%);
   top: var(--marker-y, 50%);
   transform: translate(-50%, -50%);
-  z-index: 8;
   font-family: Georgia, 'Times New Roman', serif;
   font-size: clamp(9px, 1.1vw, 15px);
 }
@@ -654,11 +676,14 @@ html, body {
   color: #ffd76a;
 }
 
+/* Moved to <body> at init and positioned with JS (map.js: positionTooltip) —
+   it has to live outside #map/.main-container, since that element's
+   `transform` (for its centering trick) creates a stacking context that
+   would otherwise cap this tooltip below #main-nav regardless of its own
+   z-index. JS clamps left/top so it never runs off the viewport, flipping
+   above/below the marker as needed. */
 .map-marker__tooltip {
-  position: absolute;
-  left: 50%;
-  bottom: calc(100% + 1.6em);
-  transform: translate(-50%, 6px);
+  position: fixed;
   width: max(190px, 16vw);
   max-width: 280px;
   padding: 0.7em 0.9em;
@@ -669,50 +694,14 @@ html, body {
   text-align: center;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
   opacity: 0;
-  visibility: hidden;
   pointer-events: none;
-  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
-  z-index: 11;
+  transition: opacity 0.2s ease;
+  z-index: 2000;
 }
 
-.map-marker__tooltip::after {
-  content: '';
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  border: 6px solid transparent;
-  border-top-color: rgba(197, 179, 130, 0.6);
-}
-
-.map-marker:hover .map-marker__tooltip,
-.map-marker:focus-within .map-marker__tooltip,
-.map-marker.is-open .map-marker__tooltip {
+.map-marker__tooltip.is-visible {
   opacity: 1;
-  visibility: visible;
-  transform: translate(-50%, 0);
   pointer-events: auto;
-}
-
-/* Markers near the map's right edge: a centered tooltip would run off the
-   container/viewport, so anchor its right edge to the marker instead of
-   centering — it opens toward the open space on the left. */
-.map-marker--edge-right .map-marker__tooltip {
-  left: auto;
-  right: 0;
-  transform: translate(0, 6px);
-}
-
-.map-marker--edge-right:hover .map-marker__tooltip,
-.map-marker--edge-right:focus-within .map-marker__tooltip,
-.map-marker--edge-right.is-open .map-marker__tooltip {
-  transform: translate(0, 0);
-}
-
-.map-marker--edge-right .map-marker__tooltip::after {
-  left: auto;
-  right: 14px;
-  transform: none;
 }
 
 .map-marker__title {

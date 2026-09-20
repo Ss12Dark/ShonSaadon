@@ -4,7 +4,6 @@
 .skill-tree {
   position: absolute;
   inset: 0;
-  z-index: 4;
 }
 
 .skill-tree__lines {
@@ -32,7 +31,6 @@
   left: var(--node-x, 50%);
   top: var(--node-y, 50%);
   transform: translate(-50%, -50%);
-  z-index: 5;
   font-family: Georgia, 'Times New Roman', serif;
 }
 
@@ -83,37 +81,16 @@
   pointer-events: none;
 }
 
-/* Project panel — position depends on modifier classes set per node in
-   skills-tree.js (panelSideClass/panelValignClass), computed from the
-   node's own x/y so panels never run off the screen. --panel-x/--panel-y
-   hold the static open-direction offsets; only the X part animates. */
-.skill-node--valign-center .skill-panel {
-  top: 50%;
-  --panel-y: -50%;
-}
-
-.skill-node--valign-top .skill-panel {
-  top: 0;
-  --panel-y: 0%;
-}
-
-.skill-node--valign-bottom .skill-panel {
-  bottom: 0;
-  --panel-y: 0%;
-}
-
-.skill-node--panel-right .skill-panel {
-  left: calc(100% + 1.4em);
-  --panel-x: -6px;
-}
-
-.skill-node--panel-left .skill-panel {
-  right: calc(100% + 1.4em);
-  --panel-x: 6px;
-}
-
+/* Project panel — ONE shared element, appended to <body> and positioned
+   with JS (skills-tree.js: positionPanelNear), not nested under a node.
+   It has to live outside #skills/.main-container — that element has a
+   `transform` for its centering trick, and any transform creates a
+   stacking context regardless of z-index, which would otherwise cap this
+   panel below #main-nav no matter how high its own z-index is. JS clamps
+   left/top so it never runs off the viewport, flipping left/right as
+   needed — see positionPanelNear for the actual side/edge logic. */
 .skill-panel {
-  position: absolute;
+  position: fixed;
   width: clamp(240px, 26vw, 360px);
   padding: 1em 1.1em;
   background: rgba(10, 8, 6, 0.95);
@@ -122,21 +99,15 @@
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6), inset 0 0 20px rgba(197, 179, 130, 0.05);
   color: #e8dcc4;
   font-family: Georgia, 'Times New Roman', serif;
-  transform: translate(var(--panel-x, 0), var(--panel-y, 0));
   opacity: 0;
-  visibility: hidden;
   pointer-events: none;
-  transition: opacity 0.22s ease, transform 0.22s ease, visibility 0.22s;
-  z-index: 20;
+  transition: opacity 0.2s ease;
+  z-index: 2000;
 }
 
-.skill-node:hover .skill-panel,
-.skill-node:focus-within .skill-panel,
-.skill-node.is-open .skill-panel {
+.skill-panel.is-visible {
   opacity: 1;
-  visibility: visible;
   pointer-events: auto;
-  transform: translate(0, var(--panel-y, 0));
 }
 
 .skill-panel__title {
@@ -180,8 +151,9 @@
   font-size: 0.85em;
 }
 
-/* Placeholder looping media — swap for
-   <img class="skill-panel__media" src="path/to.gif" alt="..."> later. */
+/* Media area: .skill-panel__media-img shows once a node sets `media`
+   (see SKILL_NODES/fillPanel in skills-tree.js); otherwise the animated
+   placeholder behind it (::before) plus the label show through. */
 .skill-panel__media {
   margin-top: 0.8em;
   width: 100%;
@@ -207,6 +179,15 @@
 @keyframes skill-media-scroll {
   from { transform: translate(0, 0); }
   to   { transform: translate(24px, 24px); }
+}
+
+.skill-panel__media-img {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .skill-panel__media-label {
