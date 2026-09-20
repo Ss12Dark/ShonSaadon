@@ -21,7 +21,7 @@
 // nested inside it can ever render above a body-level sibling like
 // #main-nav. Moving the panel to <body> is what actually escapes that.
 
-const SKILL_NODES = [
+export const SKILL_NODES = [
   {
     id: 'n1',
     x: 12,
