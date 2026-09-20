@@ -13,6 +13,85 @@ html, body {
   justify-content: center;
 }
 
+/* Game-style title screen (intro.js): shown once on load, above everything
+   else on the page (z-index higher than any popup), then removed from the
+   DOM once its exit fade finishes. .is-leaving's transition duration must
+   match FADE_OUT_MS in intro.js. */
+.intro-splash {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6em;
+  background: radial-gradient(circle at 50% 40%, #14110c 0%, #050403 70%, #000000 100%);
+  text-align: center;
+  transition: opacity 1.4s ease;
+}
+
+.intro-splash.is-leaving {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.intro-splash__title {
+  margin: 0;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(2rem, 6vw, 4rem);
+  font-weight: bold;
+  letter-spacing: 0.06em;
+  color: #d9c48a;
+  text-shadow: 0 0 18px rgba(255, 215, 106, 0.55), 0 0 4px rgba(255, 215, 106, 0.8);
+  opacity: 0;
+  transform: translateY(14px) scale(0.96);
+  animation: intro-title-in 1.6s ease-out 0.3s forwards;
+}
+
+.intro-splash__subtitle {
+  margin: 0;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(0.85rem, 1.8vw, 1.15rem);
+  font-style: italic;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(197, 179, 130, 0.85);
+  opacity: 0;
+  animation: intro-subtitle-in 1.6s ease-out 1.1s forwards;
+}
+
+@keyframes intro-title-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes intro-subtitle-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Reduced-motion fallback (intro.js swaps in this class instead of
+   animating): text just appears, no entrance/exit motion. */
+.intro-splash--static .intro-splash__title,
+.intro-splash--static .intro-splash__subtitle {
+  animation: none;
+  opacity: 1;
+  transform: none;
+}
+
 /* Screens (Hero/Skills/Map): stacked exactly on top of each other via fixed
    positioning + shrink-to-fit sizing (same centered-on-the-image sizing as
    before, just no longer dependent on body's flex layout since fixed-position
