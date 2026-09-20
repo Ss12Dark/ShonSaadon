@@ -9,6 +9,9 @@
 // media (optional): path to a .gif/.png/.jpg for the panel's 16:9 preview,
 // e.g. media: 'images/projects/rakshasa.gif'. Leave it out and the panel
 // shows the "GIF preview" placeholder instead.
+// icon (optional): a single character/emoji shown inside the node's circle.
+// The circle itself is a fixed size (see .skill-node__hotspot in skills.css)
+// regardless of icon — leave it out and the node falls back to "✦".
 //
 // The project panel is ONE shared element appended to document.body and
 // positioned with JS (getBoundingClientRect + clamping), not CSS nested
@@ -26,6 +29,7 @@ const SKILL_NODES = [
     parents: [],
     root: true,
     title: 'The Return Of Rakshasa (2020)',
+    icon: '⚔️',
     description: 'Fantasy action game created end-to-end include logic and level design. (Practical engineering end project)',
     bullets: ['Game Narrative', 'Dynamic magic system', 'Full Game Development'],
     media: 'gifs/rakshasa.gif',
@@ -37,6 +41,7 @@ const SKILL_NODES = [
     y: 40,
     parents: ['n1'],
     title: 'Mini projects (2020)',
+    icon: '🎮',
     description: 'Testing my skills in game development with small projects. (my own project)',
     bullets: ['Shooting game', 'Environment design', 'Four legs movement & animation'],
     media: 'gifs/mini.gif',
@@ -47,6 +52,7 @@ const SKILL_NODES = [
     y: 40,
     parents: ['n2'],
     title: 'Worlds clicker (2021)',
+    icon: '🖱️',
     description: 'A mobile clicker game with unique 3D worlds and a dynamic upgrade system. (my own project)',
     bullets: ['Resources system', 'Upgrade mechanics', 'Android Studio development'],
     media: 'gifs/clicker.gif',
@@ -58,6 +64,7 @@ const SKILL_NODES = [
     root: true,
     parents: ['n4'],
     title: 'The Greatest Adventurer (2022 - 2024)',
+    icon: '🗺️',
     description: 'RPG-like game with growing world eco system and AI NPCs that react to the player. (My own project)',
     bullets: ['Drops system', 'True AI NPC behavior', 'Fast save & load system', 'Attribute system'],
     media: 'gifs/tga.gif',
@@ -69,6 +76,7 @@ const SKILL_NODES = [
     parents: ['n8'],
     root: true,
     title: 'Ore 2 War (2025 - 2026)',
+    icon: '⛏️',
     description: 'Ore2War is a 2–4 player multiplayer game where you gather resources and craft weapons to sell to warring factions, most points wins. (my own project)',
     bullets: ['Multiplayer networking', 'Resource gathering & crafting', 'Deep Faction economy system', 'Hexagon random map generation', ],
     media: 'gifs/ore2war.gif',
@@ -77,53 +85,47 @@ const SKILL_NODES = [
   // Line 2 (middle, y: 60, level with n1) — "(GGJ project)".
   {
     id: 'n3',
-    x: 26,
+    x: 30,
     y: 60,
     parents: ['n1'],
     title: 'Final Reversal (2023)',
+    icon: '👹',
     description: 'The main hero fight against a Demon boss that each time you get to a certain threshold, the game functionally graded down to the past. From Third person until Text based (GGJ project)',
     bullets: ['2 Days project', 'Mechanical changes', 'Text-based storytelling'],
     media: 'gifs/reversal.gif',
   },
   {
     id: 'n5',
-    x: 42,
+    x: 50,
     y: 60,
     parents: ['n3'],
     title: 'Guns N Ropses (2024)',
+    icon: '🪢',
     description: '1V1 Battle game, while balancing on ropes trying to avoid enemy attacks. The first to the top wins. (GGJ project)',
     bullets: ['2 Days project', 'Chaotic rope physics', 'AOE Damage and knockback'],
     media: 'gifs/ropes.gif',
   },
   {
     id: 'n7',
-    x: 58,
+    x: 70,
     y: 60,
     parents: ['n5'],
     title: 'Home Sailors (2025)',
+    icon: '⛵',
     description: 'A tiny paper boat navigating a bathroom tub, collecting 15 fish in under 100 seconds. (GGJ project)',
     bullets: ['2 Days project', 'Real-time water physics', 'Full steering controls', 'Obstacle spawning system'],
     media: 'gifs/bubble.gif',
   },
   {
     id: 'n9',
-    x: 74,
+    x: 90,
     y: 60,
     parents: ['n7'],
     title: 'The Mask Tester (2026)',
+    icon: '🎭',
     description: 'A platformer game where you can test different masks that give you different POV on the world and reveals hidden platforms. (GGJ project)',
     bullets: ['2 Days project', 'Level design', 'Hidden platform system'],
     media: 'gifs/mask.gif',
-  },
-  {
-    id: 'n11',
-    x: 90,
-    y: 60,
-    parents: ['n9'],
-    title: 'Flipped Ghost (2026)',
-    description: 'A puzzle-platformer game where the timer flips the world and you solve puzzles in ghost form. (GGJ project)',
-    bullets: ['2 Days project', 'Gravity flipping mechanics', '2D pixel art', 'Puzzle design'],
-    media: 'gifs/flipped.gif',
   },
 
   // Line 3 (bottom, y: 80) — "(GMTK project)".
@@ -133,19 +135,32 @@ const SKILL_NODES = [
     y: 80,
     parents: ['n1'],
     title: 'Patrol no more (2023)',
+    icon: '🤖',
     description: 'outsmart patrolling robots, use a powerful scaling gun to shrink enemies and consume them to grow stronger. (GMTK project)',
     bullets: ['Smart Patrol AI', 'Scaling mechanics', 'Consumption system'],
     media: 'gifs/patrol.gif',
   },
   {
     id: 'n10',
-    x: 85,
+    x: 62,
     y: 80,
     parents: ['n6'],
     title: 'SoundShift (2025)',
+    icon: '🎵',
     description: 'A deck builder rhythm game where you can create your own music and play it. (GMTK project)',
     bullets: ['2 Days project', 'Deck building mechanics', 'Music creation system'],
     media: 'gifs/soundshift.gif',
+  },
+  {
+    id: 'n11',
+    x: 90,
+    y: 80,
+    parents: ['n10'],
+    title: 'Flipped Ghost (2026)',
+    icon: '👻',
+    description: 'A puzzle-platformer game where the timer flips the world and you solve puzzles in ghost form. (GMTK project)',
+    bullets: ['2 Days project', 'Gravity flipping mechanics', '2D pixel art', 'Puzzle design'],
+    media: 'gifs/flipped.gif',
   },
 ];
 
@@ -166,13 +181,21 @@ function createNodeElement(node) {
   hotspot.setAttribute('aria-expanded', 'false');
   hotspot.setAttribute('aria-describedby', PANEL_ID);
   hotspot.setAttribute('aria-label', node.title);
-  hotspot.innerHTML =
-    '<span class="skill-node__icon" aria-hidden="true">&#10022;</span>' +
-    '<span class="skill-node__particles" aria-hidden="true">' +
-    '<span class="skill-node__particle"></span>' +
-    '<span class="skill-node__particle"></span>' +
-    '<span class="skill-node__particle"></span>' +
-    '</span>';
+
+  const icon = document.createElement('span');
+  icon.className = 'skill-node__icon';
+  icon.setAttribute('aria-hidden', 'true');
+  icon.textContent = node.icon || '✦'; // ✦ fallback if a node has no icon set
+  hotspot.appendChild(icon);
+
+  const particles = document.createElement('span');
+  particles.className = 'skill-node__particles';
+  particles.setAttribute('aria-hidden', 'true');
+  for (let i = 0; i < 3; i++) {
+    particles.appendChild(document.createElement('span')).className = 'skill-node__particle';
+  }
+  hotspot.appendChild(particles);
+
   el.appendChild(hotspot);
 
   const label = document.createElement('span');
