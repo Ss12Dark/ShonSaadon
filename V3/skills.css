@@ -74,7 +74,7 @@
   left: 50%;
   transform: translateX(-50%);
   white-space: nowrap;
-  font-size: clamp(9px, 0.95vw, 14px);
+  font-size: clamp(9px, 0.95vw, 15px);
   letter-spacing: 0.03em;
   color: #d9c48a;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9), 0 0 6px rgba(0, 0, 0, 0.9);
