@@ -166,7 +166,13 @@ function createNodeElement(node) {
   hotspot.setAttribute('aria-expanded', 'false');
   hotspot.setAttribute('aria-describedby', PANEL_ID);
   hotspot.setAttribute('aria-label', node.title);
-  hotspot.innerHTML = '<span class="skill-node__icon" aria-hidden="true">&#10022;</span>';
+  hotspot.innerHTML =
+    '<span class="skill-node__icon" aria-hidden="true">&#10022;</span>' +
+    '<span class="skill-node__particles" aria-hidden="true">' +
+    '<span class="skill-node__particle"></span>' +
+    '<span class="skill-node__particle"></span>' +
+    '<span class="skill-node__particle"></span>' +
+    '</span>';
   el.appendChild(hotspot);
 
   const label = document.createElement('span');
@@ -320,6 +326,7 @@ function initSkillTree() {
     svg.setAttribute('viewBox', `0 0 ${rootRect.width} ${rootRect.height}`);
     svg.replaceChildren();
 
+    let edgeIndex = 0;
     SKILL_NODES.forEach((node) => {
       node.parents.forEach((parentId) => {
         const a = nodeEls.get(node.id)?.querySelector('.skill-node__hotspot');
@@ -328,24 +335,49 @@ function initSkillTree() {
 
         const aRect = a.getBoundingClientRect();
         const bRect = b.getBoundingClientRect();
+        const x1 = aRect.left + aRect.width / 2 - rootRect.left;
+        const y1 = aRect.top + aRect.height / 2 - rootRect.top;
+        const x2 = bRect.left + bRect.width / 2 - rootRect.left;
+        const y2 = bRect.top + bRect.height / 2 - rootRect.top;
 
+        // Base line (the static conduit) plus a shimmer overlay: a short
+        // bright dash that travels its length on a loop, using
+        // pathLength="100" so one shared CSS keyframe animation works
+        // identically regardless of each line's actual pixel length.
         const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-        line.setAttribute('x1', aRect.left + aRect.width / 2 - rootRect.left);
-        line.setAttribute('y1', aRect.top + aRect.height / 2 - rootRect.top);
-        line.setAttribute('x2', bRect.left + bRect.width / 2 - rootRect.left);
-        line.setAttribute('y2', bRect.top + bRect.height / 2 - rootRect.top);
+        line.setAttribute('x1', x1);
+        line.setAttribute('y1', y1);
+        line.setAttribute('x2', x2);
+        line.setAttribute('y2', y2);
         line.setAttribute('class', 'skill-tree__line');
         line.dataset.a = node.id;
         line.dataset.b = parentId;
         svg.appendChild(line);
+
+        const shimmer = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        shimmer.setAttribute('x1', x1);
+        shimmer.setAttribute('y1', y1);
+        shimmer.setAttribute('x2', x2);
+        shimmer.setAttribute('y2', y2);
+        shimmer.setAttribute('pathLength', '100');
+        shimmer.setAttribute('class', 'skill-tree__line-shimmer');
+        shimmer.style.animationDelay = `${-(edgeIndex * 0.6).toFixed(2)}s`;
+        shimmer.dataset.a = node.id;
+        shimmer.dataset.b = parentId;
+        svg.appendChild(shimmer);
+
+        edgeIndex += 1;
       });
     });
   }
 
   function setLinesLit(nodeId, lit) {
-    svg.querySelectorAll(`line[data-a="${nodeId}"], line[data-b="${nodeId}"]`).forEach((line) => {
-      line.classList.toggle('is-lit', lit);
-    });
+    svg
+      .querySelectorAll(`.skill-tree__line[data-a="${nodeId}"], .skill-tree__line[data-b="${nodeId}"],
+         .skill-tree__line-shimmer[data-a="${nodeId}"], .skill-tree__line-shimmer[data-b="${nodeId}"]`)
+      .forEach((line) => {
+        line.classList.toggle('is-lit', lit);
+      });
   }
 
   nodeEls.forEach((el, id) => {
