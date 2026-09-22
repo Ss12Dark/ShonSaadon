@@ -335,6 +335,42 @@ html, body {
    position and sizing so it scales and stays in place with the scene instead
    of the raw viewport. Column/row counts come from inventory.js via
    --inventory-cols/--inventory-rows, so the grid stays in sync with JS. */
+/* Title plate above the inventory — same right/width alignment as .inventory
+   so it reads as one stacked column. Nudge `bottom` if it doesn't sit right
+   above the inventory's top edge once the inventory's own size is tuned. */
+.hero-motivation {
+  position: absolute;
+  right: 3%;
+  bottom: 90%;
+  width: 21%;
+  aspect-ratio: 2172 / 724;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.hero-motivation__frame {
+  display: block;
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.5));
+  padding: 9%;
+}
+
+.hero-motivation__text {
+  position: absolute;
+  inset: 20% 9%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-weight: normal;
+  font-size: clamp(11px, 1.5vw, 24px);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #c5b382;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
 .inventory {
   position: absolute;
   right: 3%;
@@ -458,7 +494,7 @@ html, body {
 }
 
 .hero-vital__line {
-  display: block;
+  display: inline-block;
   font-size: 9cqw;
   font-weight: bold;
   color: #d9c48a;
@@ -466,10 +502,22 @@ html, body {
 }
 
 .hero-vital__caption {
-  display: block;
-  font-size: 5.5cqw;
+  display: inline-block;
+  font-size: 6cqw;
   color: rgba(232, 220, 196, 0.65);
   font-style: italic;
+}
+
+.hero-vital__color_override1 {
+  color: #4cc452;
+}
+
+.hero-vital__color_override2 {
+  color: #c4524c;
+}
+
+.hero-vital__color_override3 {
+  color: #4c84c4;
 }
 
 .hero-heading {
@@ -481,6 +529,7 @@ html, body {
   margin: 0cqw 0 3cqw;
   border-bottom: 1px solid rgba(197, 179, 130, 0.25);
   padding-bottom: 1.5cqw;
+  margin-top: 3cqw;
 }
 
 /* Just the hero-details panel's headings — build-analysis keeps the larger size. */
@@ -499,6 +548,22 @@ html, body {
   display: flex;
   align-items: center;
   gap: 2cqw;
+  width: 100%;
+  padding: 0.6cqw 0;
+  background: none;
+  border: none;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  border-radius: 3px;
+  transition: background 0.2s ease;
+}
+
+.hero-stat__row:hover,
+.hero-stat__row:focus-visible,
+.hero-stat__row.is-open {
+  background: rgba(197, 179, 130, 0.1);
 }
 
 .hero-stat__icon {
@@ -532,11 +597,76 @@ html, body {
   color: #9fc8e8;
 }
 
-.hero-stat__desc {
-  font-size: 5cqw;
-  line-height: 1.4;
-  color: rgba(232, 220, 196, 0.75);
-  margin-top: 0.5cqw;
+/* Hero stat popup (hero-stats.js) — ONE shared element, appended to
+   <body> and positioned with JS, not nested under a row. It has to live
+   outside #hero-details/.main-container: that element has a `transform`
+   for its centering trick, and any transform creates a stacking context
+   regardless of z-index, which would otherwise cap this popup below
+   #main-nav no matter how high its own z-index is. Same fix as the map
+   tooltips and skill panel. */
+.hero-stat-popup {
+  position: fixed;
+  width: clamp(220px, 22vw, 420px);
+  padding: 0.9em 1em;
+  background: rgba(10, 8, 6, 0.95);
+  border: 1px solid rgba(197, 179, 130, 0.55);
+  border-radius: 6px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6), inset 0 0 20px rgba(197, 179, 130, 0.05);
+  color: #e8dcc4;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(14px, 1.3vw, 18px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  z-index: 2000;
+}
+
+.hero-stat-popup.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.hero-stat-popup__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.8em;
+  margin-bottom: 0.5em;
+  padding-bottom: 0.4em;
+  border-bottom: 1px solid rgba(197, 179, 130, 0.25);
+}
+
+.hero-stat-popup__title {
+  font-size: 1.05em;
+  font-weight: bold;
+  color: #d9c48a;
+}
+
+.hero-stat-popup__score {
+  font-size: 1.5em;
+  font-weight: bold;
+  line-height: 1;
+  color: #c5b382;
+}
+
+.hero-stat-popup__score--s {
+  color: #ffd76a;
+  text-shadow: 0 0 6px rgba(255, 215, 106, 0.6);
+}
+
+.hero-stat-popup__score--a-plus {
+  color: #bfe6a8;
+}
+
+.hero-stat-popup__score--a {
+  color: #9fc8e8;
+}
+
+.hero-stat-popup__desc {
+  font-size: 1.2em;
+  line-height: 1.5;
+  color: rgba(232, 220, 196, 0.85);
+  text-align: center;
 }
 
 .hero-tags {
@@ -604,7 +734,7 @@ html, body {
 .build-bar__head {
   display: flex;
   justify-content: space-between;
-  font-size: 5.5cqw;
+  font-size: 5cqw;
   margin-bottom: 1cqw;
 }
 

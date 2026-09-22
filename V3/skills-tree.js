@@ -30,7 +30,7 @@ export const SKILL_NODES = [
     root: true,
     title: 'The Return Of Rakshasa (2020)',
     icon: '⚔️',
-    description: 'Fantasy action game created end-to-end include logic and level design. (Practical engineering end project)',
+    description: 'My First game, a fantasy action game created end-to-end include logic and level design. (Practical engineering end project)',
     bullets: ['Game Narrative', 'Dynamic magic system', 'Full Game Development'],
     media: 'gifs/rakshasa.gif',
   },

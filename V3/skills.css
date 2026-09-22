@@ -178,15 +178,15 @@
    needed — see positionPanelNear for the actual side/edge logic. */
 .skill-panel {
   position: fixed;
-  width: clamp(240px, 26vw, 360px);
-  padding: 1em 1.1em;
+  width: clamp(320px, 34vw, 480px);
+  padding: 1.2em 1.3em;
   background: rgba(10, 8, 6, 0.95);
   border: 1px solid rgba(197, 179, 130, 0.55);
   border-radius: 6px;
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6), inset 0 0 20px rgba(197, 179, 130, 0.05);
   color: #e8dcc4;
   font-family: Georgia, 'Times New Roman', serif;
-  font-size: clamp(15px, 1.4vw, 19px);
+  font-size: clamp(18px, 1.8vw, 24px);
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.2s ease;
@@ -298,6 +298,6 @@
 
 @media (max-width: 640px) {
   .skill-panel {
-    width: clamp(180px, 62vw, 300px);
+    width: clamp(240px, 74vw, 380px);
   }
 }

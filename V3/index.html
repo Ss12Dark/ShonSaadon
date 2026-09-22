@@ -54,83 +54,76 @@
     <div id="hero-details" class="flaoting-div hero-details" aria-label="Hero Details">
       <div class="hero-vitals">
         <div class="hero-vital">
-          <span class="hero-vital__line">Level: 5</span>
-          <span class="hero-vital__caption">Years of Experience</span>
+          <span class="hero-vital__line hero-vital__color_override1">Level: 5</span>
+          <span class="hero-vital__caption hero-vital__color_override1">Years of Experience</span>
         </div>
         <div class="hero-vital">
-          <span class="hero-vital__line">Health: 29</span>
-          <span class="hero-vital__caption">Years of Age</span>
+          <span class="hero-vital__line hero-vital__color_override2">Health: 29</span>
+          <span class="hero-vital__caption hero-vital__color_override2">Years of Age</span>
         </div>
         <div class="hero-vital">
-          <span class="hero-vital__line">Mana: &infin;</span>
-          <span class="hero-vital__caption">Always learning. Always building.</span>
+          <span class="hero-vital__line hero-vital__color_override3">Mana: &infin;</span>
+          <span class="hero-vital__caption hero-vital__color_override3">Always learning. Always building.</span>
         </div>
       </div>
 
       <h3 class="hero-heading">Stats</h3>
       <ul class="hero-stats">
         <li class="hero-stat">
-          <div class="hero-stat__row">
+          <button type="button" class="hero-stat__row" data-desc="Turns problems into working systems, from backend architecture to gameplay mechanics.">
             <span class="hero-stat__icon">&#9876;</span>
             <span class="hero-stat__name">Engineering</span>
             <span class="hero-stat__grade hero-stat__grade--s">S</span>
-          </div>
-          <p class="hero-stat__desc">Turns problems into working systems, from backend architecture to gameplay mechanics.</p>
+          </button>
         </li>
         <li class="hero-stat">
-          <div class="hero-stat__row">
+          <button type="button" class="hero-stat__row" data-desc="4+ years of building games with Unreal Engine, from quick prototypes to multiplayer systems.">
             <span class="hero-stat__icon">&#9876;</span>
             <span class="hero-stat__name">Game Development</span>
-            <span class="hero-stat__grade hero-stat__grade--a-plus">A+</span>
-          </div>
-          <p class="hero-stat__desc">4+ years of building games with Unreal Engine, from quick prototypes to multiplayer systems.</p>
+            <span class="hero-stat__grade hero-stat__grade--a">A</span>
+          </button>
         </li>
         <li class="hero-stat">
-          <div class="hero-stat__row">
+          <button type="button" class="hero-stat__row" data-desc="Enjoys digging into difficult bugs, understanding how things actually work, and finding a way forward.">
             <span class="hero-stat__icon">&#129504;</span>
             <span class="hero-stat__name">Problem Solving</span>
             <span class="hero-stat__grade hero-stat__grade--s">S</span>
-          </div>
-          <p class="hero-stat__desc">Enjoys digging into difficult bugs, understanding how things actually work, and finding a way forward.</p>
+          </button>
         </li>
         <li class="hero-stat">
-          <div class="hero-stat__row">
+          <button type="button" class="hero-stat__row" data-desc="Likes experimenting, building unusual mechanics, and turning ideas into playable experiences.">
             <span class="hero-stat__icon">&#10024;</span>
             <span class="hero-stat__name">Creativity</span>
-            <span class="hero-stat__grade hero-stat__grade--a">A</span>
-          </div>
-          <p class="hero-stat__desc">Likes experimenting, building unusual mechanics, and turning ideas into playable experiences.</p>
+            <span class="hero-stat__grade hero-stat__grade--a-plus">A+</span>
+          </button>
         </li>
         <li class="hero-stat">
-          <div class="hero-stat__row">
+          <button type="button" class="hero-stat__row" data-desc="Uses AI as a development partner with Claude Code, MCP, custom tools, and AI-assisted workflows.">
             <span class="hero-stat__icon">&#129302;</span>
             <span class="hero-stat__name">AI &amp; Automation</span>
             <span class="hero-stat__grade hero-stat__grade--a-plus">A+</span>
-          </div>
-          <p class="hero-stat__desc">Uses AI as a development partner with Claude Code, MCP, custom tools, and AI-assisted workflows.</p>
+          </button>
         </li>
         <li class="hero-stat">
-          <div class="hero-stat__row">
+          <button type="button" class="hero-stat__row" data-desc="Comfortable working with programmers, artists, designers, and figuring things out together.">
             <span class="hero-stat__icon">&#129309;</span>
             <span class="hero-stat__name">Teamwork</span>
             <span class="hero-stat__grade hero-stat__grade--s">S</span>
-          </div>
-          <p class="hero-stat__desc">Comfortable working with programmers, artists, designers, and figuring things out together.</p>
+          </button>
         </li>
       </ul>
-
       <h3 class="hero-heading">Specializations</h3>
       <ul class="hero-tags">
-        <li>Unreal Engine 5</li>
-        <li>Blueprints</li>
-        <li>PHP</li>
-        <li>Fullstack</li>
-        <li>Multiplayer</li>
-        <li>Game Systems</li>
-        <li>Claude Code</li>
+        <li>UE 5</li>
+        <li>Backend</li>
+        <li>Level Design</li>
         <li>AI Knowledge</li>
         <li>MCP & Skills</li>
       </ul>
+    </div>
+    <div class="hero-motivation">
+      <img src="images/container-5-16-horizontal.png" alt="" class="hero-motivation__frame">
+      <span class="hero-motivation__text">Motivation</span>
     </div>
     <div id="inventory" class="inventory" aria-label="Inventory"></div>
     <div id="build-analysis" class="flaoting-div build-analysis" aria-label="Build Analysis"></div>
@@ -247,6 +240,7 @@
   <script type="module" src="skills-tree.js"></script>
   <script type="module" src="hero-gifs.js"></script>
   <script type="module" src="intro.js"></script>
+  <script type="module" src="hero-stats.js"></script>
 </body>
 
 </html>
