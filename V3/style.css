@@ -317,17 +317,25 @@ html, body {
 @keyframes hero-gif-drift {
   0% {
     opacity: 0;
-    transform: translate(-50%, -50%) translate(0, 0) scale(0.25);
+    transform: translate(-50%, -50%) translate(0, 0) scale(0.2);
   }
-  15% {
+  12% {
     opacity: 1;
   }
-  70% {
+  78% {
+    /* Arrived at the side spot, same as the effect always did — now taking
+       up most of the timeline, so this first leg reads as slower. */
     opacity: 1;
+    transform: translate(-50%, -50%) translate(var(--drift-x, 0), var(--drift-y, 0)) scale(1);
+  }
+  94% {
+    opacity: 0.85;
   }
   100% {
+    /* Then pulled the rest of the way into the nav button, shrinking —
+       comparatively quick, like a final yank. */
     opacity: 0;
-    transform: translate(-50%, -50%) translate(var(--drift-x, 0), var(--drift-y, 0)) scale(1);
+    transform: translate(-50%, -50%) translate(var(--nav-x, 0), var(--nav-y, 0)) scale(0.12);
   }
 }
 
@@ -677,7 +685,7 @@ html, body {
 }
 
 .hero-tags li {
-  font-size: 4.8cqw;
+  font-size: 5.8cqw;
   padding: 1.4cqw 2.8cqw;
   border: 1px solid rgba(120, 72, 40, 0.5);
   border-radius: 2px;
@@ -734,7 +742,7 @@ html, body {
 .build-bar__head {
   display: flex;
   justify-content: space-between;
-  font-size: 5cqw;
+  font-size: 6cqw;
   margin-bottom: 1cqw;
 }
 
@@ -857,6 +865,33 @@ html, body {
 .main-nav__divider {
   color: rgba(197, 179, 130, 0.4);
   font-size: 0.85em;
+}
+
+/* One-shot flash (hero-gifs.js) the instant a drifting gif "arrives" at
+   this nav item — distinct from a persistent pulse: it plays once per
+   arrival and fully stops, not a standing animation. Duration must match
+   NAV_GLOW_MS in hero-gifs.js. */
+.main-nav__link--arrival-glow {
+  animation: main-nav-arrival-glow 0.7s ease-out;
+}
+
+@keyframes main-nav-arrival-glow {
+  0% {
+    text-shadow: 0 0 0 rgba(110, 231, 150, 0);
+  }
+  35% {
+    color: #6ee796;
+    text-shadow: 0 0 16px rgba(110, 231, 150, 1), 0 0 4px rgba(110, 231, 150, 1);
+  }
+  100% {
+    text-shadow: 0 0 0 rgba(110, 231, 150, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .main-nav__link--arrival-glow {
+    animation: none;
+  }
 }
 
 .sr-only {

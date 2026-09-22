@@ -1,6 +1,9 @@
 // Ambient effect on the Hero screen: small gold-framed project GIFs
 // periodically "grow" out from behind the 3D character and drift to a
-// random spot on the left or right side, then fade away.
+// random spot on the left or right side (same as always) — then, instead
+// of just fading there, get pulled the rest of the way toward the "Skills"
+// nav button, shrinking as they go, and give it a brief glow the instant
+// each one arrives.
 //
 // Reuses SKILL_NODES' `media` list (imported from skills-tree.js) instead
 // of keeping a second copy — add a project's gif there and it automatically
@@ -12,8 +15,9 @@ import { SKILL_NODES } from './skills-tree.js';
 
 const SPAWN_INTERVAL_MIN = 3000; // ms between spawns
 const SPAWN_INTERVAL_MAX = 5500;
-const DRIFT_DURATION_MIN = 5.5; // s, how long one thumbnail takes to drift out + fade
+const DRIFT_DURATION_MIN = 5.5; // s, how long one thumbnail takes to reach the side, then the nav
 const DRIFT_DURATION_MAX = 8;
+const NAV_GLOW_MS = 700; // must match .main-nav__link--arrival-glow's animation duration in style.css
 
 // Spawn point, as a percent of #hero — roughly the character's torso, so
 // thumbnails visually emerge from behind them (character-viewer's canvas
@@ -29,7 +33,8 @@ function randomBetween(min, max) {
 
 function initHeroGifs() {
   const hero = document.getElementById('hero');
-  if (!hero) return;
+  const navTarget = document.querySelector('.main-nav__link[data-target="skills"]');
+  if (!hero || !navTarget) return;
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
   const mediaList = SKILL_NODES.map((node) => node.media).filter(Boolean);
@@ -51,26 +56,48 @@ function initHeroGifs() {
     return pick;
   }
 
-  function spawnOne() {
-    const rect = hero.getBoundingClientRect();
-    if (!rect.width || !rect.height) return;
+  function glowNavTarget() {
+    navTarget.classList.remove('main-nav__link--arrival-glow');
+    // Force a reflow so re-adding the class restarts the animation even if
+    // a previous glow (from an earlier arrival) hasn't finished yet.
+    void navTarget.offsetWidth;
+    navTarget.classList.add('main-nav__link--arrival-glow');
+    setTimeout(() => navTarget.classList.remove('main-nav__link--arrival-glow'), NAV_GLOW_MS);
+  }
 
+  function spawnOne() {
+    const heroRect = hero.getBoundingClientRect();
+    if (!heroRect.width || !heroRect.height) return;
+
+    const navRect = navTarget.getBoundingClientRect();
+    if (!navRect.width || !navRect.height) return;
+
+    const spawnX = (SPAWN_X_PERCENT / 100) * heroRect.width;
+    const spawnY = (SPAWN_Y_PERCENT / 100) * heroRect.height;
+
+    // First leg: same random left/right side spot as always.
     const toLeft = nextToLeft;
     nextToLeft = !nextToLeft;
-
-    const targetXPercent = toLeft ? randomBetween(26, 40) : randomBetween(60, 74);
+    const sideXPercent = toLeft ? randomBetween(26, 40) : randomBetween(60, 74);
     // Stay level with the spawn point or drift a bit higher — never lower.
-    const targetYPercent = randomBetween(SPAWN_Y_PERCENT - 14, SPAWN_Y_PERCENT);
+    const sideYPercent = randomBetween(SPAWN_Y_PERCENT - 14, SPAWN_Y_PERCENT);
+    const sideX = (sideXPercent / 100) * heroRect.width;
+    const sideY = (sideYPercent / 100) * heroRect.height;
 
-    const driftX = ((targetXPercent - SPAWN_X_PERCENT) / 100) * rect.width;
-    const driftY = ((targetYPercent - SPAWN_Y_PERCENT) / 100) * rect.height;
+    // Second leg: from that side spot on to the nav button's on-screen
+    // center, converted into the same "px relative to #hero's own box"
+    // space that left/top (percentages of #hero) already use.
+    const navX = navRect.left + navRect.width / 2 - heroRect.left;
+    const navY = navRect.top + navRect.height / 2 - heroRect.top;
 
     const item = document.createElement('div');
     item.className = 'hero-gif-spawner__item';
     item.style.left = `${SPAWN_X_PERCENT}%`;
     item.style.top = `${SPAWN_Y_PERCENT}%`;
-    item.style.setProperty('--drift-x', `${driftX}px`);
-    item.style.setProperty('--drift-y', `${driftY}px`);
+    item.style.setProperty('--drift-x', `${sideX - spawnX}px`);
+    item.style.setProperty('--drift-y', `${sideY - spawnY}px`);
+    item.style.setProperty('--nav-x', `${navX - spawnX}px`);
+    item.style.setProperty('--nav-y', `${navY - spawnY}px`);
     item.style.animationDuration = `${randomBetween(DRIFT_DURATION_MIN, DRIFT_DURATION_MAX)}s`;
 
     const img = document.createElement('img');
@@ -80,7 +107,10 @@ function initHeroGifs() {
     item.appendChild(img);
 
     spawner.appendChild(item);
-    item.addEventListener('animationend', () => item.remove());
+    item.addEventListener('animationend', () => {
+      item.remove();
+      glowNavTarget();
+    });
   }
 
   function scheduleNext() {
