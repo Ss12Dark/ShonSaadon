@@ -182,6 +182,15 @@ function createNodeElement(node) {
   hotspot.setAttribute('aria-describedby', PANEL_ID);
   hotspot.setAttribute('aria-label', node.title);
 
+  // Reuses the same ornate frame as the inventory slots — decorative only,
+  // pointer-events:none so it never blocks the hotspot's own clicks.
+  const frame = document.createElement('img');
+  frame.className = 'skill-node__frame';
+  frame.src = 'images/item-slot-container.png';
+  frame.alt = '';
+  frame.draggable = false;
+  hotspot.appendChild(frame);
+
   const icon = document.createElement('span');
   icon.className = 'skill-node__icon';
   icon.setAttribute('aria-hidden', 'true');

@@ -79,25 +79,37 @@
   aspect-ratio: 1;
   border-radius: 50%;
   background: radial-gradient(circle at 35% 30%, rgba(60, 50, 35, 0.9), rgba(10, 8, 6, 0.95));
-  border: 2px solid rgba(197, 179, 130, 0.55);
+  border: none;
   color: #d9c48a;
   font-size: clamp(12px, 1.5vw, 19px);
   cursor: pointer;
   padding: 0;
-  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+  transition: filter 0.25s ease, transform 0.25s ease;
+}
+
+/* Same ornate frame as the inventory slots (.inventory-slot__frame) —
+   enlarged/overlapping the same way, purely decorative. */
+.skill-node__frame {
+  padding: 1%;
+  margin: -25%;
+  position: absolute;
+  inset: 0;
+  width: 150%;
+  height: 150%;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
 }
 
 .skill-node__hotspot:hover,
 .skill-node__hotspot:focus-visible,
 .skill-node.is-open .skill-node__hotspot {
-  border-color: #ffd76a;
-  box-shadow: 0 0 14px 3px rgba(255, 215, 106, 0.5);
   transform: scale(1.12);
+  filter: drop-shadow(0 0 6px rgba(255, 215, 106, 0.85));
 }
 
 .skill-node--highlight .skill-node__hotspot {
-  border-color: rgba(255, 215, 106, 0.8);
-  box-shadow: 0 0 8px 1px rgba(255, 215, 106, 0.35);
+  filter: drop-shadow(0 0 4px rgba(255, 215, 106, 0.5));
 }
 
 .skill-node__icon {
@@ -226,7 +238,7 @@
 .skill-panel__bullets li {
   font-size: 0.8em;
   line-height: 1.4;
-  color: rgba(232, 220, 196, 0.75);
+  color: rgba(0, 255, 0, 0.75);
   padding-left: 1.1em;
   position: relative;
 }

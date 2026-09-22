@@ -969,7 +969,7 @@ html, body {
 }
 
 .map-marker--current .map-marker__label {
-  color: #ffd76a;
+  color: #d9ff00;
 }
 
 /* Moved to <body> at init and positioned with JS (map.js: positionTooltip) —
@@ -1022,7 +1022,7 @@ html, body {
 
 .map-marker__date {
   font-size: 0.72em;
-  color: rgba(197, 179, 130, 0.85);
+  color: rgba(0, 255, 55, 0.85);
   margin-bottom: 0.4em;
 }
 

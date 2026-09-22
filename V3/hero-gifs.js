@@ -109,13 +109,18 @@ function initHeroGifs() {
     spawner.appendChild(item);
     item.addEventListener('animationend', () => {
       item.remove();
-      glowNavTarget();
+      // The animation keeps running (and animationend still fires) even
+      // while #hero is hidden behind another screen — only glow the nav if
+      // Hero is actually the screen you're looking at right now.
+      if (hero.classList.contains('is-active')) glowNavTarget();
     });
   }
 
   function scheduleNext() {
     setTimeout(() => {
-      spawnOne();
+      // Don't bother spawning while Hero isn't the visible screen — nothing
+      // to see, and it'd just queue up an arrival glow for later.
+      if (hero.classList.contains('is-active')) spawnOne();
       scheduleNext();
     }, randomBetween(SPAWN_INTERVAL_MIN, SPAWN_INTERVAL_MAX));
   }

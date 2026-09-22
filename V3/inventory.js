@@ -49,18 +49,29 @@ const STAT_MAX = 100;
 // Display names are parsed from the filename itself (see titleFromFilename
 // below), so there's no separate name to keep in sync — just stats.
 // Stat values are the item's FULL strength (slot position then scales them
-// down per slotWeight above). Values are tuned so that stacking the 2-3 items
-// that share a stat into the top slots lands that stat's total close to
-// STAT_MAX — categories with only one contributing item (Adventure) carry
-// that item's full weight alone, so its value sits near STAT_MAX by itself.
+// down per slotWeight above).
+//
+// PUZZLE: these values are solved so that exactly one slot arrangement
+// pushes every stat to 100% at once — every other arrangement leaves at
+// least one stat short, since slotWeight's per-slot multipliers are all
+// distinct, non-round fractions that only cancel out cleanly for this one
+// combination. The solution, slot 0 through 6 in order (7 and 8 stay
+// empty), my-cat.png first as required:
+//   0: my-cat.png
+//   1: coffee.png
+//   2: computer.png
+//   3: anime-sketchbook.png
+//   4: pizza.png
+//   5: ai.png
+//   6: traveling.png
 const ITEM_DATA = {
-  'my-cat.png': { stats: { Health: 50, Creativity: 20 } },
-  'computer.png': { stats: { Technology: 50, Career: 45 } },
-  'pizza.png': { stats: { Creativity: 30, Health: 25 } },
-  'ai.png': { stats: { Technology: 50, Learning: 50 } },
-  'anime-sketchbook.png': { stats: { Creativity: 55, Learning: 20 } },
-  'coffee.png': { stats: { Career: 60, Health: 30 } },
-  'traveling.png': { stats: { Adventure: 100, Learning: 35 } },
+  'computer.png': { stats: { Technology: 50, Career: 42 } },
+  'pizza.png': { stats: { Creativity: 30, Health: 20 } },
+  'ai.png': { stats: { Technology: 140, Learning: 142 } },
+  'anime-sketchbook.png': { stats: { Creativity: 40, Learning: 40 } },
+  'coffee.png': { stats: { Career: 76, Health: 40 } },
+  'traveling.png': { stats: { Adventure: 307, Learning: 35 } },
+  'my-cat.png': { stats: { Health: 53.5, Creativity: 57 } },
 };
 
 // Filename segments that should render as an acronym rather than Title Case.
