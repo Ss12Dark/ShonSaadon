@@ -92,6 +92,15 @@ html, body {
   transform: none;
 }
 
+/* Firework celebration canvas (fireworks.js) — created/removed on demand,
+   above everything else so it's never blocked by a panel. */
+.fireworks-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  pointer-events: none;
+}
+
 /* Screens (Hero/Skills/Map): stacked exactly on top of each other via fixed
    positioning + shrink-to-fit sizing (same centered-on-the-image sizing as
    before, just no longer dependent on body's flex layout since fixed-position
@@ -545,6 +554,21 @@ html, body {
   font-size: 7cqw;
 }
 
+.hero-heading__hint {
+  font-size: 0.7em;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  font-style: italic;
+  color: rgba(197, 179, 130, 0.6);
+}
+
+.build-hint {
+  margin: -2cqw 0 3cqw;
+  font-size: 5cqw;
+  font-style: italic;
+  color: rgba(197, 179, 130, 0.6);
+}
+
 .hero-stats {
   list-style: none;
   display: flex;
@@ -822,6 +846,21 @@ html, body {
   transition: top 0.5s ease, font-size 0.5s ease;
 }
 
+/* Decorative only — doesn't affect .main-nav's own box, layout, or the
+   buttons' hit areas. .main-nav is already position:fixed, so it's this
+   image's containing block without needing any change to it. */
+.main-nav__frame {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 106%;
+  height: 140%;
+  transform: translate(-50%, -50%);
+  object-fit: fill;
+  pointer-events: none;
+  user-select: none;
+}
+
 .main-nav__link {
   display: flex;
   flex-direction: column;
@@ -830,8 +869,10 @@ html, body {
   background: none;
   border: none;
   color: #e8dcc4;
-  font-size: 0.85em;
-  letter-spacing: 0.12em;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-weight: normal;
+  font-size: 0.95em;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
   cursor: pointer;
   padding: 0.2em 0.3em;
@@ -839,7 +880,7 @@ html, body {
 }
 
 .main-nav__sublabel {
-  font-size: 0.62em;
+  font-size: 0.82em;
   letter-spacing: 0.06em;
   text-transform: none;
   color: rgba(197, 179, 130, 0.75);
@@ -1033,36 +1074,68 @@ html, body {
 }
 
 /* "?" marker — an unlisted stop for whatever's next, with a contact CTA
-   instead of role/date. Pulsing ring makes it read as worth clicking. */
+   instead of role/date. Made to stand out more: a breathing glow on the
+   hotspot itself plus two staggered pulsing rings, and the label's glow
+   (not its size/color) breathes too. None of this changes the hotspot's
+   own box size or the label's font-size — box-shadow/text-shadow/opacity
+   and the pseudo-elements' own scale only. */
 .map-marker--question .map-marker__label {
   font-size: 1.3em;
   font-weight: bold;
   color: #ffd76a;
   text-shadow: 0 0 8px rgba(255, 215, 106, 0.6), 0 1px 3px rgba(0, 0, 0, 0.9);
+  animation: marker-question-label-glow 2.4s ease-in-out infinite;
+}
+
+@keyframes marker-question-label-glow {
+  0%, 100% {
+    text-shadow: 0 0 8px rgba(255, 215, 106, 0.6), 0 1px 3px rgba(0, 0, 0, 0.9);
+  }
+  50% {
+    text-shadow: 0 0 18px rgba(255, 215, 106, 1), 0 0 6px rgba(255, 215, 106, 0.9), 0 1px 3px rgba(0, 0, 0, 0.9);
+  }
 }
 
 .map-marker--question .map-marker__hotspot {
   position: relative;
+  animation: marker-question-glow 2.4s ease-in-out infinite;
 }
 
-.map-marker--question .map-marker__hotspot::after {
+@keyframes marker-question-glow {
+  0%, 100% {
+    box-shadow: 0 0 6px 1px rgba(255, 215, 106, 0.25);
+  }
+  50% {
+    box-shadow: 0 0 24px 7px rgba(255, 215, 106, 0.8);
+  }
+}
+
+.map-marker--question .map-marker__hotspot::after,
+.map-marker--question .map-marker__hotspot::before {
   content: '';
   position: absolute;
   inset: -30%;
   border-radius: 50%;
-  border: 1px solid rgba(255, 215, 106, 0.6);
+  border: 1px solid rgba(255, 215, 106, 0.7);
   opacity: 0;
   animation: marker-question-pulse 2.4s ease-out infinite;
   pointer-events: none;
 }
 
+.map-marker--question .map-marker__hotspot::before {
+  animation-delay: 1.2s;
+}
+
 @keyframes marker-question-pulse {
-  0% { opacity: 0.6; transform: scale(0.8); }
-  80%, 100% { opacity: 0; transform: scale(1.6); }
+  0% { opacity: 0.7; transform: scale(0.8); }
+  80%, 100% { opacity: 0; transform: scale(1.9); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .map-marker--question .map-marker__hotspot::after {
+  .map-marker--question .map-marker__label,
+  .map-marker--question .map-marker__hotspot,
+  .map-marker--question .map-marker__hotspot::after,
+  .map-marker--question .map-marker__hotspot::before {
     animation: none;
   }
 }

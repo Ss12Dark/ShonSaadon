@@ -7,6 +7,8 @@
 // full (100%) strength, the last slot counts at 10%, linearly in between. So
 // dragging an item earlier in the grid raises its priority; no separate zone.
 
+import { triggerFireworks } from './fireworks.js';
+
 const GRID_COLUMNS = 3;
 const GRID_ROWS = 3;
 const SLOT_FRAME_IMAGE = 'images/item-slot-container.png';
@@ -107,6 +109,7 @@ class Inventory {
     this.buildAnalysisRoot = options.buildAnalysisRoot || null;
     this.slots = [];
     this.drag = null;
+    this.wasSolved = false; // tracks the rising edge for the fireworks trigger
 
     this.root.style.setProperty('--inventory-cols', String(GRID_COLUMNS));
     this.root.style.setProperty('--inventory-rows', String(GRID_ROWS));
@@ -363,6 +366,14 @@ class Inventory {
       totals[stat] = Math.round(totals[stat]);
     });
 
+    // Fireworks on the rising edge only — the moment every stat first hits
+    // 100%, not on every refresh while it stays solved (e.g. dragging an
+    // item between the two empty slots, which changes nothing). Breaking
+    // the solution and re-solving it fires again.
+    const isSolved = STAT_CATEGORIES.every((stat) => totals[stat] >= STAT_MAX);
+    if (isSolved && !this.wasSolved) triggerFireworks();
+    this.wasSolved = isSolved;
+
     this._renderBuildAnalysis(totals, activeItems);
   }
 
@@ -373,6 +384,11 @@ class Inventory {
     heading.className = 'hero-heading';
     heading.textContent = 'Build Analysis';
     this.buildAnalysisRoot.appendChild(heading);
+
+    const hint = document.createElement('p');
+    hint.className = 'build-hint';
+    hint.textContent = 'try to balance by changing motivation order!';
+    this.buildAnalysisRoot.appendChild(hint);
 
     const bars = document.createElement('div');
     bars.className = 'build-bars';
