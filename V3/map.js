@@ -7,6 +7,8 @@
 // render above a body-level sibling like #main-nav, no matter its own
 // z-index. Moving it out is what actually escapes that.
 
+import { unlockAchievement } from './achievements.js';
+
 const TOOLTIP_MARGIN = 16; // gap kept from the viewport edge and from the marker
 const TOOLTIP_GAP = 12; // gap between the marker and its tooltip
 const HIDE_DELAY = 150; // ms grace period so moving the pointer onto the tooltip doesn't close it
@@ -14,6 +16,8 @@ const HIDE_DELAY = 150; // ms grace period so moving the pointer onto the toolti
 function initMapMarkers() {
   const markers = Array.from(document.querySelectorAll('.map-marker'));
   if (!markers.length) return;
+
+  const hovered = new Set();
 
   const entries = markers.map((marker) => {
     const hotspot = marker.querySelector('.map-marker__hotspot');
@@ -58,6 +62,9 @@ function initMapMarkers() {
     entry.tooltip.classList.add('is-visible');
     entry.marker.classList.add('is-open');
     entry.hotspot?.setAttribute('aria-expanded', 'true');
+
+    hovered.add(entry);
+    if (hovered.size === entries.length) unlockAchievement('hover_map');
   }
 
   function hide() {

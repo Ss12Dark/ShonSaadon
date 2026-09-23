@@ -8,6 +8,7 @@
 // dragging an item earlier in the grid raises its priority; no separate zone.
 
 import { triggerFireworks } from './fireworks.js';
+import { unlockAchievement } from './achievements.js';
 
 const GRID_COLUMNS = 3;
 const GRID_ROWS = 3;
@@ -371,7 +372,10 @@ class Inventory {
     // item between the two empty slots, which changes nothing). Breaking
     // the solution and re-solving it fires again.
     const isSolved = STAT_CATEGORIES.every((stat) => totals[stat] >= STAT_MAX);
-    if (isSolved && !this.wasSolved) triggerFireworks();
+    if (isSolved && !this.wasSolved) {
+      triggerFireworks();
+      unlockAchievement('motivation_puzzle');
+    }
     this.wasSolved = isSolved;
 
     this._renderBuildAnalysis(totals, activeItems);

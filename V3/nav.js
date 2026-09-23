@@ -3,6 +3,8 @@
 // cross-fade. Add a new screen by giving it an id and adding a matching
 // <button data-target="that-id"> in #main-nav; no other wiring needed.
 
+import { unlockAchievement } from './achievements.js';
+
 // How far below the active screen's own top edge #main-nav sits, as a
 // percentage of that screen's rendered height. Since each .main-container
 // shrink-wraps its background image and is centered on the viewport, its
@@ -33,6 +35,7 @@ function initNav() {
     .filter(Boolean);
 
   let currentTarget = null;
+  const visited = new Set();
 
   function positionNav() {
     const screen = document.getElementById(currentTarget);
@@ -56,6 +59,9 @@ function initNav() {
     });
     document.body.dataset.activeScreen = targetId;
     positionNav();
+
+    visited.add(targetId);
+    if (visited.size === screens.length) unlockAchievement('visit_containers');
   }
 
   links.forEach((link) => {

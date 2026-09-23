@@ -21,6 +21,8 @@
 // nested inside it can ever render above a body-level sibling like
 // #main-nav. Moving the panel to <body> is what actually escapes that.
 
+import { unlockAchievement } from './achievements.js';
+
 export const SKILL_NODES = [
   {
     id: 'n1',
@@ -280,6 +282,7 @@ function initSkillTree() {
   } = createSharedPanel();
   let openNodeId = null;
   let hideTimer = null;
+  const hoveredNodes = new Set();
 
   function fillPanel(node) {
     panelTitle.textContent = node.title;
@@ -328,6 +331,9 @@ function initSkillTree() {
     fillPanel(node);
     positionPanelNear(hotspot);
     panel.classList.add('is-visible');
+
+    hoveredNodes.add(node.id);
+    if (hoveredNodes.size === SKILL_NODES.length) unlockAchievement('hover_skills');
   }
 
   function hidePanel() {

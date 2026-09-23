@@ -11,12 +11,16 @@
 // body-level sibling like #main-nav. Moving it to <body> is what escapes
 // that (same fix already applied to the map tooltips and skill panel).
 
+import { unlockAchievement } from './achievements.js';
+
 const POPUP_MARGIN = 16; // gap kept from the viewport edge and from the row
 const HIDE_DELAY = 150; // ms grace period so moving the pointer onto the popup doesn't close it
 
 function initHeroStats() {
   const rows = Array.from(document.querySelectorAll('.hero-stat__row'));
   if (!rows.length) return;
+
+  const hovered = new Set();
 
   const popup = document.createElement('div');
   popup.className = 'hero-stat-popup';
@@ -81,6 +85,9 @@ function initHeroStats() {
     position(row);
     popup.classList.add('is-visible');
     row.classList.add('is-open');
+
+    hovered.add(row);
+    if (hovered.size === rows.length) unlockAchievement('hover_stats');
   }
 
   function hide() {

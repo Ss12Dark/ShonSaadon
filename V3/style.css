@@ -101,6 +101,87 @@ html, body {
   pointer-events: none;
 }
 
+/* Steam-style achievement toasts (achievements.js). Deliberately NOT the
+   site's gold theme — dark Steam blue + its signature light-blue accent —
+   because the point is to be recognizable as "a Steam achievement," not to
+   blend in. Host stacks toasts bottom-up if the queue is somehow still
+   draining one when the next starts (shouldn't normally overlap since
+   achievements.js shows them one at a time). */
+.achievement-toast-host {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 10500;
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 10px;
+  pointer-events: none;
+}
+
+.achievement-toast {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 320px;
+  padding: 12px 16px;
+  background: linear-gradient(135deg, #1b2838, #0e1a24);
+  border: 1px solid rgba(102, 192, 244, 0.35);
+  border-radius: 6px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+  font-family: Arial, Helvetica, sans-serif;
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.achievement-toast.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.achievement-toast__icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  font-size: 22px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 4px;
+}
+
+.achievement-toast__body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.achievement-toast__eyebrow {
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: #66c0f4;
+}
+
+.achievement-toast__title {
+  font-size: 15px;
+  font-weight: bold;
+  color: #ffffff;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (max-width: 480px) {
+  .achievement-toast {
+    width: min(300px, calc(100vw - 40px));
+  }
+}
+
 /* Screens (Hero/Skills/Map): stacked exactly on top of each other via fixed
    positioning + shrink-to-fit sizing (same centered-on-the-image sizing as
    before, just no longer dependent on body's flex layout since fixed-position
