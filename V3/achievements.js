@@ -13,14 +13,15 @@ const TOAST_HOLD_MS = 4500; // how long a toast stays fully visible
 const TOAST_TRANSITION_MS = 400; // must match the slide/fade duration in style.css
 
 const ACHIEVEMENTS = {
-  motivation_puzzle: { icon: '🧩', title: 'Perfectly Balanced' },
-  hover_stats: { icon: '📊', title: 'Know Thyself' },
-  hover_skills: { icon: '🌳', title: 'Full Tree' },
-  hover_map: { icon: '🗺️', title: 'Cartographer' },
-  visit_containers: { icon: '🚪', title: 'Grand Tour' },
-  time_2min: { icon: '⏱️', title: 'Getting Comfortable' },
-  time_5min: { icon: '⏳', title: 'Making Yourself at Home' },
-  time_10min: { icon: '🏆', title: 'True Adventurer' },
+  motivation_puzzle: { icon: '🧩', title: 'Perfectly Balanced', desc: 'Solved the Life Build puzzle — every stat at 100%' },
+  hover_stats: { icon: '📊', title: 'Know Thyself', desc: 'Hovered all 6 stats in the Hero panel' },
+  hover_skills: { icon: '🌳', title: 'Full Tree', desc: 'Hovered every node in the skill tree' },
+  hover_map: { icon: '🗺️', title: 'Cartographer', desc: 'Hovered every location on the map' },
+  visit_containers: { icon: '🚪', title: 'Grand Tour', desc: 'Visited Hero, Skills, and Map' },
+  time_2min: { icon: '⏱️', title: 'Getting Comfortable', desc: 'Stayed on the site for 2 minutes' },
+  time_5min: { icon: '⏳', title: 'Making Yourself at Home', desc: 'Stayed on the site for 5 minutes' },
+  time_10min: { icon: '🏆', title: 'True Adventurer', desc: 'Stayed on the site for 10 minutes' },
+  spin_fast: { icon: '💫', title: 'Like a Record Baby', desc: 'Spun the 3D character really fast' },
 };
 
 const unlocked = new Set();
@@ -43,7 +44,7 @@ function processQueue() {
   if (showing || !queue.length) return;
   showing = true;
 
-  const { icon, title } = queue.shift();
+  const { icon, title, desc } = queue.shift();
   const host = ensureToastHost();
 
   const toast = document.createElement('div');
@@ -53,9 +54,11 @@ function processQueue() {
     <span class="achievement-toast__body">
       <span class="achievement-toast__eyebrow">Achievement Unlocked</span>
       <span class="achievement-toast__title"></span>
+      <span class="achievement-toast__desc"></span>
     </span>
   `;
   toast.querySelector('.achievement-toast__title').textContent = title;
+  toast.querySelector('.achievement-toast__desc').textContent = desc;
   host.appendChild(toast);
 
   // Next frame, so the initial (off-screen) state is committed before the

@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { unlockAchievement } from './achievements.js';
 
 // Change this to point at a different character model.
 const MODEL_URL = './3d%20model/shon-3d.glb';
@@ -8,6 +9,9 @@ const AUTO_ROTATE_SPEED = 0.25; // radians per second when idle
 const DRAG_SPEED = 0.01; // radians per pixel of drag
 const MOMENTUM_DECAY = 3; // higher = drag momentum settles into auto-rotate faster
 const TARGET_HEIGHT = 1.8; // world units the model is scaled to fill
+// First guess at "spinning it really fast" — a single-frame instantaneous
+// rad/s reading, so it's noisy by nature; tune up/down after trying it.
+const SPIN_ACHIEVEMENT_THRESHOLD = 25;
 
 class CharacterViewer {
   constructor(container) {
@@ -181,6 +185,10 @@ class CharacterViewer {
 
     const dt = Math.max(this.clock.getDelta(), 1 / 240);
     this.dragVelocity = rotationDelta / dt;
+
+    if (Math.abs(this.dragVelocity) > SPIN_ACHIEVEMENT_THRESHOLD) {
+      unlockAchievement('spin_fast');
+    }
   }
 
   _onPointerUp(event) {
