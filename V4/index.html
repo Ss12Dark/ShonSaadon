@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shon Saadon · Backend + UE5 Developer</title>
+  <meta name="description" content="Shon Saadon: Backend Engineer at Sciplay and UE5 game developer. Portfolio, projects, experience and CV.">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="skills.css">
+  <link rel="stylesheet" href="v4.css">
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
+</head>
+
+<!-- All content (jobs, projects, stack, links) lives in data.js; the panels
+     below are empty hosts that the scripts fill. Art, gifs and the 3D model
+     are shared with V3 (../V3/...), not copied. -->
+<body>
+  <div id="intro-splash" class="intro-splash">
+    <h1 class="intro-splash__title">Shon Saadon</h1>
+    <p class="intro-splash__subtitle">A True Gamer</p>
+    <p class="intro-splash__skip">click to skip</p>
+  </div>
+  <div class="smoke-layer" aria-hidden="true">
+    <span class="smoke-layer__cloud smoke-layer__cloud--1"></span>
+    <span class="smoke-layer__cloud smoke-layer__cloud--2"></span>
+    <span class="smoke-layer__cloud smoke-layer__cloud--3"></span>
+    <span class="smoke-layer__cloud smoke-layer__cloud--4"></span>
+  </div>
+
+  <nav id="main-nav" class="main-nav" aria-label="Primary">
+    <img src="../V3/images/container-5-16-horizontal.png" alt="" class="main-nav__frame">
+    <button type="button" class="main-nav__link" data-target="hero" data-hash="overview">
+      Overview
+      <span class="main-nav__sublabel">Hero</span>
+    </button>
+    <span class="main-nav__divider" aria-hidden="true">|</span>
+    <button type="button" class="main-nav__link" data-target="skills" data-hash="projects">
+      Projects
+      <span class="main-nav__sublabel">Skills</span>
+    </button>
+    <span class="main-nav__divider" aria-hidden="true">|</span>
+    <button type="button" class="main-nav__link" data-target="map" data-hash="experience">
+      Experience
+      <span class="main-nav__sublabel">Map</span>
+    </button>
+    <span class="main-nav__divider" aria-hidden="true">|</span>
+    <button type="button" class="main-nav__link" data-target="about" data-hash="about">
+      About
+      <span class="main-nav__sublabel">Inventory</span>
+    </button>
+  </nav>
+
+  <!-- OVERVIEW: the character sheet. Everything a recruiter needs, zero clicks. -->
+  <div id="hero" class="main-container">
+    <img src="../V3/background images/main.png" alt="" class="background-image">
+    <span class="glow glow--top-left"></span>
+    <span class="glow2 glow--mid"></span>
+    <div id="character-viewer" class="character-viewer"></div>
+    <div id="hero-details" class="flaoting-div hero-details" aria-label="Hero details"></div>
+    <div id="hero-quest-log" class="flaoting-div panel-top-right" aria-label="Work experience"></div>
+    <div id="hero-loot" class="flaoting-div panel-bottom-right" aria-label="Top projects"></div>
+  </div>
+
+  <!-- PROJECTS: skill tree / journal. Built by skills-tree.js from PROJECTS. -->
+  <div id="skills" class="main-container">
+    <img src="../V3/background images/skills.png" alt="" class="background-image">
+    <div id="skills-toolbar" class="skills-toolbar" aria-label="Project filters"></div>
+    <div id="skill-tree" class="skill-tree" aria-label="Project skill tree"></div>
+    <div id="skills-journal" class="skills-journal" aria-label="Project list" hidden></div>
+  </div>
+
+  <!-- EXPERIENCE: map markers + Quest Log list. Built by map.js from JOBS. -->
+  <div id="map" class="main-container">
+    <img src="../V3/background images/map.png" alt="" class="background-image">
+    <div id="map-markers"></div>
+    <div class="map-log" aria-label="Work experience">
+      <h3 class="map-log__title">Quest Log</h3>
+      <div id="map-log-list" class="quest-list"></div>
+    </div>
+  </div>
+
+  <!-- ABOUT: personality. Stats + the Motivation inventory puzzle. -->
+  <div id="about" class="main-container">
+    <img src="../V3/background images/main.png" alt="" class="background-image">
+    <span class="glow glow--top-left"></span>
+    <span class="glow2 glow--mid"></span>
+    <div id="about-stats" class="flaoting-div hero-details" aria-label="Stats"></div>
+    <div class="hero-motivation">
+      <img src="../V3/images/container-5-16-horizontal.png" alt="" class="hero-motivation__frame">
+      <span class="hero-motivation__text">Motivation</span>
+    </div>
+    <div id="inventory" class="inventory" aria-label="Inventory"></div>
+    <div id="build-analysis" class="flaoting-div build-analysis" aria-label="Build Analysis"></div>
+  </div>
+
+  <nav id="hotbar" class="hotbar" aria-label="Contact and CV"></nav>
+
+  <script type="module" src="nav.js"></script>
+  <script type="module" src="quick-cv.js"></script>
+  <script type="module" src="hotbar.js"></script>
+  <script type="module" src="script.js"></script>
+  <script type="module" src="inventory.js"></script>
+  <script type="module" src="map.js"></script>
+  <script type="module" src="skills-tree.js"></script>
+  <script type="module" src="hero-panels.js"></script>
+  <script type="module" src="hero-gifs.js"></script>
+  <script type="module" src="intro.js"></script>
+  <script type="module" src="achievements.js"></script>
+</body>
+
+</html>

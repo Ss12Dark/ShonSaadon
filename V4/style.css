@@ -1,0 +1,1257 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  background-color: #000000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Game-style title screen (intro.js): shown once on load, above everything
+   else on the page (z-index higher than any popup), then removed from the
+   DOM once its exit fade finishes. .is-leaving's transition duration must
+   match FADE_OUT_MS in intro.js. */
+.intro-splash {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6em;
+  background: radial-gradient(circle at 50% 40%, #14110c 0%, #050403 70%, #000000 100%);
+  text-align: center;
+  transition: opacity 1.4s ease;
+}
+
+.intro-splash.is-leaving {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.intro-splash__title {
+  margin: 0;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(2rem, 6vw, 4rem);
+  font-weight: bold;
+  letter-spacing: 0.06em;
+  color: #d9c48a;
+  text-shadow: 0 0 18px rgba(255, 215, 106, 0.55), 0 0 4px rgba(255, 215, 106, 0.8);
+  opacity: 0;
+  transform: translateY(14px) scale(0.96);
+  animation: intro-title-in 1.6s ease-out 0.3s forwards;
+}
+
+.intro-splash__subtitle {
+  margin: 0;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(0.85rem, 1.8vw, 1.15rem);
+  font-style: italic;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(197, 179, 130, 0.85);
+  opacity: 0;
+  animation: intro-subtitle-in 1.6s ease-out 1.1s forwards;
+}
+
+@keyframes intro-title-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes intro-subtitle-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Reduced-motion fallback (intro.js swaps in this class instead of
+   animating): text just appears, no entrance/exit motion. */
+.intro-splash--static .intro-splash__title,
+.intro-splash--static .intro-splash__subtitle {
+  animation: none;
+  opacity: 1;
+  transform: none;
+}
+
+/* Firework celebration canvas (fireworks.js) — created/removed on demand,
+   above everything else so it's never blocked by a panel. */
+.fireworks-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  pointer-events: none;
+}
+
+/* Steam-style achievement toasts (achievements.js). Deliberately NOT the
+   site's gold theme — dark Steam blue + its signature light-blue accent —
+   because the point is to be recognizable as "a Steam achievement," not to
+   blend in. Host stacks toasts bottom-up if the queue is somehow still
+   draining one when the next starts (shouldn't normally overlap since
+   achievements.js shows them one at a time). */
+.achievement-toast-host {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 10500;
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 10px;
+  pointer-events: none;
+}
+
+.achievement-toast {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 320px;
+  padding: 12px 16px;
+  background: linear-gradient(135deg, #1b2838, #0e1a24);
+  border: 1px solid rgba(102, 192, 244, 0.35);
+  border-radius: 6px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+  font-family: Arial, Helvetica, sans-serif;
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.achievement-toast.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.achievement-toast__icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  font-size: 22px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 4px;
+}
+
+.achievement-toast__body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.achievement-toast__eyebrow {
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: #66c0f4;
+}
+
+.achievement-toast__title {
+  font-size: 15px;
+  font-weight: bold;
+  color: #ffffff;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.achievement-toast__desc {
+  font-size: 12px;
+  line-height: 1.3;
+  color: #c7d5e0;
+}
+
+@media (max-width: 480px) {
+  .achievement-toast {
+    width: min(300px, calc(100vw - 40px));
+  }
+}
+
+/* Screens (Hero/Skills/Map): stacked exactly on top of each other via fixed
+   positioning + shrink-to-fit sizing (same centered-on-the-image sizing as
+   before, just no longer dependent on body's flex layout since fixed-position
+   elements sit outside normal flow). nav.js toggles .is-active to cross-fade
+   between them; only the active one is interactive.
+   Note: the transform below (needed for centering) creates a stacking
+   context on its own, regardless of z-index — so anything popup-like that
+   needs to render above #main-nav (map tooltips, skill panels, ...) can't
+   just use a high z-index while nested in here; it has to be moved to
+   <body> and positioned with JS instead (see map.js / skills-tree.js).
+   Relative screen order otherwise follows DOM order (hero, skills, map),
+   which only matters mid cross-fade. */
+.main-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 100vw;
+  max-height: 100vh;
+  border: 1px solid rgba(197, 179, 130, 0.4);
+  box-shadow:
+    0 0 10px 2px rgba(197, 179, 130, 0.3),
+    0 0 24px 4px rgba(197, 179, 130, 0.15),
+    inset 0 0 20px rgba(197, 179, 130, 0.1);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+}
+
+.main-container.is-active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Dark-fantasy smoke layer: drop this block + the .smoke-layer markup into any
+   page that links this stylesheet to get the same atmospheric effect. Pure CSS,
+   no JS, animates only transform/opacity so it stays cheap alongside WebGL. */
+.smoke-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, transparent 0%, transparent 22%, black 65%);
+  mask-image: radial-gradient(circle at 50% 50%, transparent 0%, transparent 22%, black 65%);
+}
+
+.smoke-layer__cloud {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  will-change: transform;
+}
+
+.smoke-layer__cloud--1 {
+  width: 70vw;
+  height: 70vw;
+  top: -20vw;
+  left: -15vw;
+  background: radial-gradient(circle, rgba(70, 80, 100, 0.5) 0%, rgba(20, 22, 28, 0.28) 55%, transparent 75%);
+  animation: smoke-drift-1 46s ease-in-out infinite;
+}
+
+.smoke-layer__cloud--2 {
+  width: 60vw;
+  height: 60vw;
+  right: -12vw;
+  bottom: -18vw;
+  background: radial-gradient(circle, rgba(30, 32, 40, 0.55) 0%, rgba(10, 10, 14, 0.32) 55%, transparent 75%);
+  animation: smoke-drift-2 58s ease-in-out infinite;
+}
+
+.smoke-layer__cloud--3 {
+  width: 55vw;
+  height: 55vw;
+  top: 8vh;
+  right: -20vw;
+  background: radial-gradient(circle, rgba(50, 60, 80, 0.4) 0%, rgba(15, 16, 20, 0.22) 55%, transparent 75%);
+  animation: smoke-drift-3 52s ease-in-out infinite;
+}
+
+.smoke-layer__cloud--4 {
+  width: 50vw;
+  height: 50vw;
+  bottom: 5vh;
+  left: -18vw;
+  background: radial-gradient(circle, rgba(25, 28, 34, 0.5) 0%, rgba(8, 8, 10, 0.28) 55%, transparent 75%);
+  animation: smoke-drift-4 64s ease-in-out infinite;
+}
+
+@keyframes smoke-drift-1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(6vw, 4vh) scale(1.12); }
+}
+
+@keyframes smoke-drift-2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-5vw, -6vh) scale(1.1); }
+}
+
+@keyframes smoke-drift-3 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-4vw, 5vh) scale(1.08); }
+}
+
+@keyframes smoke-drift-4 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(5vw, -4vh) scale(1.1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .smoke-layer__cloud {
+    animation: none;
+  }
+}
+
+.glow {
+  position: absolute;
+  width: 25%;
+  height: 25%;
+  background: radial-gradient(circle, rgba(197, 179, 130, 0.6) 0%, rgba(197, 179, 130, 0.01) 45%, transparent 70%);
+  filter: blur(2vw);
+  pointer-events: none;
+  z-index: 2;
+  animation: glow-breathe 3s ease-in-out infinite;
+}
+
+.glow2 {
+  position: absolute;
+  width: 25%;
+  height: 85%;
+  background: radial-gradient(circle, rgba(197, 179, 130, 0.6) 0%, rgba(197, 179, 130, 0.01) 45%, transparent 70%);
+  filter: blur(2vw);
+  pointer-events: none;
+  z-index: 2;
+  animation: glow-breathe 5s ease-in-out infinite;
+}
+
+.glow--top-left {
+  top: 1%;
+  left: 1%;
+}
+
+.glow--mid {
+  top: -10%;
+  left: 37.5%;
+}
+
+@keyframes glow-breathe {
+  0%, 100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+}
+
+.background-image {
+  display: block;
+  max-width: 100vw;
+  max-height: 99vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+.character-viewer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  z-index: 3;
+  touch-action: none;
+  cursor: default;
+}
+
+.character-viewer canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  background: transparent;
+}
+
+/* Ambient gif thumbnails (hero-gifs.js): spawned behind the character —
+   z-index 2 is below .character-viewer's 3, so the mostly-transparent
+   canvas lets these show through everywhere except where the character's
+   own opaque pixels are, which is what makes them read as emerging from
+   behind them. */
+.hero-gif-spawner {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.hero-gif-spawner__item {
+  position: absolute;
+  width: clamp(90px, 10vw, 160px);
+  aspect-ratio: 4 / 3;
+  opacity: 0;
+  padding: 3px;
+  border-radius: 6px;
+  background: linear-gradient(135deg, #f5dfa0, #c5943a, #f5dfa0);
+  box-shadow: 0 0 12px 2px rgba(197, 179, 130, 0.5), 0 6px 16px rgba(0, 0, 0, 0.5);
+  animation-name: hero-gif-drift;
+  animation-timing-function: ease-out;
+  animation-fill-mode: forwards;
+}
+
+.hero-gif-spawner__item img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 3px;
+}
+
+@keyframes hero-gif-drift {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) translate(0, 0) scale(0.2);
+  }
+  12% {
+    opacity: 1;
+  }
+  78% {
+    /* Arrived at the side spot, same as the effect always did — now taking
+       up most of the timeline, so this first leg reads as slower. */
+    opacity: 1;
+    transform: translate(-50%, -50%) translate(var(--drift-x, 0), var(--drift-y, 0)) scale(1);
+  }
+  94% {
+    opacity: 0.85;
+  }
+  100% {
+    /* Then pulled the rest of the way into the nav button, shrinking —
+       comparatively quick, like a final yank. */
+    opacity: 0;
+    transform: translate(-50%, -50%) translate(var(--nav-x, 0), var(--nav-y, 0)) scale(0.12);
+  }
+}
+
+/* Inventory HUD — anchored to the main-container/image like .glow, using %
+   position and sizing so it scales and stays in place with the scene instead
+   of the raw viewport. Column/row counts come from inventory.js via
+   --inventory-cols/--inventory-rows, so the grid stays in sync with JS. */
+/* Title plate above the inventory — same right/width alignment as .inventory
+   so it reads as one stacked column. Nudge `bottom` if it doesn't sit right
+   above the inventory's top edge once the inventory's own size is tuned. */
+.hero-motivation {
+  position: absolute;
+  right: 3%;
+  bottom: 90%;
+  width: 21%;
+  aspect-ratio: 2172 / 724;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.hero-motivation__frame {
+  display: block;
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.5));
+  padding: 9%;
+}
+
+.hero-motivation__text {
+  position: absolute;
+  inset: 20% 9%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-weight: normal;
+  font-size: clamp(11px, 1.5vw, 24px);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #c5b382;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.inventory {
+  position: absolute;
+  right: 3%;
+  bottom: 53%;
+  width: 21%;
+  aspect-ratio: var(--inventory-cols, 5) / var(--inventory-rows, 3);
+  z-index: 5;
+  display: grid;
+  grid-template-columns: repeat(var(--inventory-cols, 5), 1fr);
+  grid-template-rows: repeat(var(--inventory-rows, 3), 1fr);
+  gap: 1.5%;
+  padding: 1.5%;
+  box-sizing: border-box;
+  background: rgba(10, 10, 10, 0.35);
+}
+
+.inventory-slot {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  background: rgba(20, 16, 12, 0.35);
+  box-sizing: border-box;
+}
+
+.inventory-slot__frame {
+  padding: 1%;
+  margin: -25%;
+  position: absolute;
+  inset: 0;
+  width: 150%;
+  height: 150%;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.inventory-item {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 14%;
+  box-sizing: border-box;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+
+.inventory-item--dragging {
+  cursor: grabbing;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.6));
+}
+
+.inventory-item__icon {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.flaoting-div {
+  position: absolute;
+  z-index: 5;
+  padding: 1.5%;
+  box-sizing: border-box;
+  background: rgba(10, 10, 10, 0.35);
+  /* border: 1px solid rgba(255, 0, 0, 0.966); */
+}
+
+.hero-details {
+  right: 76%;
+  bottom: 10%;
+  width: 21%;
+  height: 65%;
+}
+
+.build-analysis {
+  bottom: 13%;
+  right: 3%;
+  width: 21%;
+  height: 36%;
+}
+
+/* Hero/item detail panels: text sizes use cqw (container-query width) so
+   they scale with the panel itself — same "stays in place, scales with the
+   scene" idea as .glow/.inventory, just applied at the text level. */
+.flaoting-div {
+  container-type: inline-size;
+  overflow-y: auto;
+  overflow-x: hidden;
+  color: #e8dcc4;
+  font-family: Georgia, 'Times New Roman', serif;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(197, 179, 130, 0.5) rgba(0, 0, 0, 0.3);
+}
+
+.flaoting-div::-webkit-scrollbar {
+  width: 6px;
+}
+
+.flaoting-div::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.flaoting-div::-webkit-scrollbar-thumb {
+  background: rgba(197, 179, 130, 0.5);
+  border-radius: 3px;
+}
+
+.hero-vitals {
+  display: flex;
+  flex-direction: column;
+  gap: 3cqw;
+  padding-bottom: 4cqw;
+  margin-bottom: 4cqw;
+  border-bottom: 1px solid rgba(197, 179, 130, 0.3);
+}
+
+.hero-vital__line {
+  display: inline-block;
+  font-size: 9cqw;
+  font-weight: bold;
+  color: #d9c48a;
+  letter-spacing: 0.02em;
+}
+
+.hero-vital__caption {
+  display: inline-block;
+  font-size: 6cqw;
+  color: rgba(232, 220, 196, 0.65);
+  font-style: italic;
+}
+
+.hero-vital__color_override1 {
+  color: #4cc452;
+}
+
+.hero-vital__color_override2 {
+  color: #c4524c;
+}
+
+.hero-vital__color_override3 {
+  color: #4c84c4;
+}
+
+.hero-heading {
+  font-size: 8.5cqw;
+  font-weight: normal;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #c5b382;
+  margin: 0cqw 0 3cqw;
+  border-bottom: 1px solid rgba(197, 179, 130, 0.25);
+  padding-bottom: 1.5cqw;
+  margin-top: 3cqw;
+}
+
+/* Just the hero-details panel's headings — build-analysis keeps the larger size. */
+.hero-details .hero-heading {
+  font-size: 7cqw;
+}
+
+.hero-heading__hint {
+  font-size: 0.7em;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  font-style: italic;
+  color: rgba(197, 179, 130, 0.6);
+}
+
+.build-hint {
+  margin: -2cqw 0 3cqw;
+  font-size: 5cqw;
+  font-style: italic;
+  color: rgba(197, 179, 130, 0.6);
+}
+
+.hero-stats {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 3.5cqw;
+}
+
+.hero-stat__row {
+  display: flex;
+  align-items: center;
+  gap: 2cqw;
+  width: 100%;
+  padding: 0.6cqw 0;
+  background: none;
+  border: none;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  border-radius: 3px;
+  transition: background 0.2s ease;
+}
+
+.hero-stat__row:hover,
+.hero-stat__row:focus-visible,
+.hero-stat__row.is-open {
+  background: rgba(197, 179, 130, 0.1);
+}
+
+.hero-stat__icon {
+  font-size: 6cqw;
+  flex-shrink: 0;
+}
+
+.hero-stat__name {
+  font-size: 6cqw;
+  font-weight: bold;
+  flex: 1;
+}
+
+.hero-stat__grade {
+  font-size: 6cqw;
+  font-weight: bold;
+  min-width: 2.4em;
+  text-align: right;
+}
+
+.hero-stat__grade--s {
+  color: #ffd76a;
+  text-shadow: 0 0 6px rgba(255, 215, 106, 0.6);
+}
+
+.hero-stat__grade--a-plus {
+  color: #bfe6a8;
+}
+
+.hero-stat__grade--a {
+  color: #9fc8e8;
+}
+
+/* Hero stat popup (hero-stats.js) — ONE shared element, appended to
+   <body> and positioned with JS, not nested under a row. It has to live
+   outside #hero-details/.main-container: that element has a `transform`
+   for its centering trick, and any transform creates a stacking context
+   regardless of z-index, which would otherwise cap this popup below
+   #main-nav no matter how high its own z-index is. Same fix as the map
+   tooltips and skill panel. */
+.hero-stat-popup {
+  position: fixed;
+  width: clamp(220px, 22vw, 420px);
+  padding: 0.9em 1em;
+  background: rgba(10, 8, 6, 0.95);
+  border: 1px solid rgba(197, 179, 130, 0.55);
+  border-radius: 6px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6), inset 0 0 20px rgba(197, 179, 130, 0.05);
+  color: #e8dcc4;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(14px, 1.3vw, 18px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  z-index: 2000;
+}
+
+.hero-stat-popup.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.hero-stat-popup__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.8em;
+  margin-bottom: 0.5em;
+  padding-bottom: 0.4em;
+  border-bottom: 1px solid rgba(197, 179, 130, 0.25);
+}
+
+.hero-stat-popup__title {
+  font-size: 1.05em;
+  font-weight: bold;
+  color: #d9c48a;
+}
+
+.hero-stat-popup__score {
+  font-size: 1.5em;
+  font-weight: bold;
+  line-height: 1;
+  color: #c5b382;
+}
+
+.hero-stat-popup__score--s {
+  color: #ffd76a;
+  text-shadow: 0 0 6px rgba(255, 215, 106, 0.6);
+}
+
+.hero-stat-popup__score--a-plus {
+  color: #bfe6a8;
+}
+
+.hero-stat-popup__score--a {
+  color: #9fc8e8;
+}
+
+.hero-stat-popup__desc {
+  font-size: 1.2em;
+  line-height: 1.5;
+  color: rgba(232, 220, 196, 0.85);
+  text-align: center;
+}
+
+.hero-tags {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5cqw;
+}
+
+.hero-tags li {
+  font-size: 5.8cqw;
+  padding: 1.4cqw 2.8cqw;
+  border: 1px solid rgba(120, 72, 40, 0.5);
+  border-radius: 2px;
+  background: rgba(120, 72, 40, 0.15);
+  color: rgba(232, 220, 196, 0.85);
+  white-space: nowrap;
+}
+
+/* Hover tooltip showing an item's stats — one shared element, repositioned per item. */
+.inventory-tooltip {
+  position: fixed;
+  transform: translate(-50%, calc(-100% - 10px));
+  z-index: 2000;
+  pointer-events: none;
+  background: rgba(10, 8, 6, 0.92);
+  border: 1px solid rgba(197, 179, 130, 0.5);
+  color: #e8dcc4;
+  font-family: Georgia, 'Times New Roman', serif;
+  padding: 8px 12px;
+  border-radius: 3px;
+  max-width: 260px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.inventory-tooltip__title {
+  font-size: 16px;
+  font-weight: bold;
+  color: #d9c48a;
+  margin-bottom: 3px;
+}
+
+.inventory-tooltip__stats {
+  font-size: 14px;
+  color: rgba(232, 220, 196, 0.85);
+  margin-bottom: 3px;
+}
+
+.inventory-tooltip__zone {
+  font-size: 12px;
+  font-style: italic;
+  color: rgba(197, 179, 130, 0.8);
+}
+
+/* Build Analysis panel content (rendered into #build-analysis, a .flaoting-div,
+   so it inherits the cqw text scaling and scrollbar from that shared rule). */
+.build-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 3cqw;
+  margin-bottom: 4cqw;
+}
+
+.build-bar__head {
+  display: flex;
+  justify-content: space-between;
+  font-size: 6cqw;
+  margin-bottom: 1cqw;
+}
+
+.build-bar__track {
+  width: 100%;
+  height: 2.2cqw;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(197, 179, 130, 0.3);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.build-bar__fill {
+  height: 100%;
+  background: linear-gradient(90deg, rgba(197, 179, 130, 0.7), rgba(255, 215, 106, 0.9));
+  transition: width 0.3s ease;
+}
+
+.build-description {
+  font-size: 5.5cqw;
+  line-height: 1.4;
+  font-style: italic;
+  color: rgba(232, 220, 196, 0.85);
+  margin-bottom: 4cqw;
+}
+
+.build-bonus-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 2cqw;
+}
+
+.build-bonus-list li {
+  display: flex;
+  justify-content: space-between;
+  gap: 2cqw;
+  font-size: 5cqw;
+  border-bottom: 1px dashed rgba(197, 179, 130, 0.2);
+  padding-bottom: 1.5cqw;
+}
+
+.build-bonus-list__name {
+  font-weight: bold;
+  color: #d9c48a;
+}
+
+.build-bonus-list__stats {
+  color: rgba(232, 220, 196, 0.7);
+  text-align: right;
+}
+
+/* Floating top nav — fixed to the viewport (not the scene image) since it's
+   page chrome, not part of the game scene. nav.js toggles .is-active on the
+   matching #hero/#skills/#map screen and .is-current here. nav.js sets
+   #main-nav's `top` and `font-size` inline, computed live from the active
+   screen's own bounding box (see NAV_TOP_OFFSET_PERCENT/NAV_FONT_SCALE in
+   nav.js) — the values below are only a fallback for the instant before that
+   JS runs. .main-nav__link/.main-nav__divider size themselves in em against
+   this, so the whole bar's text scales together with one JS-driven value. */
+.main-nav {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 0.9em;
+  padding: 0.6em 1.4em;
+  background: rgba(10, 10, 10, 0.5);
+  border: 1px solid rgba(197, 179, 130, 0.5);
+  border-radius: 999px;
+  backdrop-filter: blur(6px);
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 15px;
+  transition: top 0.5s ease, font-size 0.5s ease;
+}
+
+/* Decorative only — doesn't affect .main-nav's own box, layout, or the
+   buttons' hit areas. .main-nav is already position:fixed, so it's this
+   image's containing block without needing any change to it. */
+.main-nav__frame {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 106%;
+  height: 140%;
+  transform: translate(-50%, -50%);
+  object-fit: fill;
+  pointer-events: none;
+  user-select: none;
+}
+
+.main-nav__link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15em;
+  background: none;
+  border: none;
+  color: #e8dcc4;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-weight: normal;
+  font-size: 0.95em;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  cursor: pointer;
+  padding: 0.2em 0.3em;
+  transition: color 0.2s ease, text-shadow 0.2s ease;
+}
+
+.main-nav__sublabel {
+  font-size: 0.82em;
+  letter-spacing: 0.06em;
+  text-transform: none;
+  color: rgba(197, 179, 130, 0.75);
+}
+
+.main-nav__link:hover,
+.main-nav__link:focus-visible {
+  color: #ffd76a;
+  text-shadow: 0 0 8px rgba(255, 215, 106, 0.6);
+}
+
+.main-nav__link.is-current {
+  color: #ffd76a;
+  text-shadow: 0 0 8px rgba(255, 215, 106, 0.6);
+}
+
+.main-nav__link:hover .main-nav__sublabel,
+.main-nav__link:focus-visible .main-nav__sublabel,
+.main-nav__link.is-current .main-nav__sublabel {
+  color: rgba(255, 215, 106, 0.75);
+}
+
+.main-nav__divider {
+  color: rgba(197, 179, 130, 0.4);
+  font-size: 0.85em;
+}
+
+/* One-shot flash (hero-gifs.js) the instant a drifting gif "arrives" at
+   this nav item — distinct from a persistent pulse: it plays once per
+   arrival and fully stops, not a standing animation. Duration must match
+   NAV_GLOW_MS in hero-gifs.js. */
+.main-nav__link--arrival-glow {
+  animation: main-nav-arrival-glow 0.7s ease-out;
+}
+
+@keyframes main-nav-arrival-glow {
+  0% {
+    text-shadow: 0 0 0 rgba(110, 231, 150, 0);
+  }
+  35% {
+    color: #6ee796;
+    text-shadow: 0 0 16px rgba(110, 231, 150, 1), 0 0 4px rgba(110, 231, 150, 1);
+  }
+  100% {
+    text-shadow: 0 0 0 rgba(110, 231, 150, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .main-nav__link--arrival-glow {
+    animation: none;
+  }
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ============================================================
+   MAP JOURNEY MARKERS
+   One .map-marker per workplace, aligned to the path nodes already
+   drawn into "background images/map.png". Position is set purely via
+   --marker-x/--marker-y (percentages within #map) — tune the classes
+   below to re-align with the art, no markup changes needed. To
+   add/remove a stop, duplicate/delete a .map-marker block in
+   index.html plus its position class here.
+   ============================================================ */
+.map-marker {
+  position: absolute;
+  left: var(--marker-x, 50%);
+  top: var(--marker-y, 50%);
+  transform: translate(-50%, -50%);
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(9px, 1.1vw, 15px);
+}
+
+/* Placeholder positions, roughly matched to the path nodes in map.png —
+   nudge these to line up exactly with your eye. */
+.marker--technion     { --marker-x: 17.5%; --marker-y: 73%; }
+.marker--machava-tova { --marker-x: 29.7%; --marker-y: 55.3%; }
+.marker--afcon        { --marker-x: 45.7%; --marker-y: 43.5%; }
+.marker--bylith       { --marker-x: 61.9%; --marker-y: 39.6%; }
+.marker--sciplay      { --marker-x: 76.5%; --marker-y: 31.6%; }
+.marker--freelance     { --marker-x: 72.4%; --marker-y: 73.6%; }
+.marker--question     { --marker-x: 88.6%; --marker-y: 20%; }
+
+.map-marker__hotspot {
+  display: block;
+  width: clamp(24px, 4.6vw, 50px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: transparent;
+  border: 1px solid transparent;
+  padding: 0;
+  margin-bottom: 0.45em;
+  cursor: pointer;
+  transition: background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.map-marker__hotspot:hover,
+.map-marker__hotspot:focus-visible,
+.map-marker.is-open .map-marker__hotspot {
+  background: rgba(255, 215, 106, 0.12);
+  border-color: rgba(255, 215, 106, 0.75);
+  box-shadow: 0 0 14px 3px rgba(255, 215, 106, 0.45);
+}
+
+.map-marker__label {
+  position: absolute;
+  top: calc(100% + 0.35em);
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-size: 0.9em;
+  letter-spacing: 0.04em;
+  color: #d9c48a;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9), 0 0 6px rgba(0, 0, 0, 0.9);
+  pointer-events: none;
+}
+
+.map-marker--current .map-marker__label {
+  color: #d9ff00;
+}
+
+/* Moved to <body> at init and positioned with JS (map.js: positionTooltip) —
+   it has to live outside #map/.main-container, since that element's
+   `transform` (for its centering trick) creates a stacking context that
+   would otherwise cap this tooltip below #main-nav regardless of its own
+   z-index. JS clamps left/top so it never runs off the viewport, flipping
+   above/below the marker as needed. */
+.map-marker__tooltip {
+  position: fixed;
+  width: max(190px, 16vw);
+  max-width: 340px;
+  padding: 0.7em 0.9em;
+  background: rgba(10, 8, 6, 0.92);
+  border: 1px solid rgba(197, 179, 130, 0.5);
+  border-radius: 4px;
+  color: #e8dcc4;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(13px, 1.2vw, 25px);
+  text-align: center;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  z-index: 2000;
+}
+
+.map-marker__tooltip.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.map-marker__title {
+  font-size: 1.05em;
+  font-weight: bold;
+  color: #d9c48a;
+  margin-bottom: 0.15em;
+}
+
+.map-marker--current .map-marker__title {
+  color: #ffd76a;
+}
+
+.map-marker__role {
+  font-size: 0.85em;
+  font-weight: bold;
+  color: #e8dcc4;
+  margin-bottom: 0.1em;
+}
+
+.map-marker__date {
+  font-size: 0.72em;
+  color: rgba(0, 255, 55, 0.85);
+  margin-bottom: 0.4em;
+}
+
+.map-marker__desc {
+  font-size: 0.78em;
+  line-height: 1.45;
+  color: rgba(232, 220, 196, 0.8);
+}
+
+/* "?" marker — an unlisted stop for whatever's next, with a contact CTA
+   instead of role/date. Made to stand out more: a breathing glow on the
+   hotspot itself plus two staggered pulsing rings, and the label's glow
+   (not its size/color) breathes too. None of this changes the hotspot's
+   own box size or the label's font-size — box-shadow/text-shadow/opacity
+   and the pseudo-elements' own scale only. */
+.map-marker--question .map-marker__label {
+  font-size: 1.3em;
+  font-weight: bold;
+  color: #ffd76a;
+  text-shadow: 0 0 8px rgba(255, 215, 106, 0.6), 0 1px 3px rgba(0, 0, 0, 0.9);
+  animation: marker-question-label-glow 2.4s ease-in-out infinite;
+}
+
+@keyframes marker-question-label-glow {
+  0%, 100% {
+    text-shadow: 0 0 8px rgba(255, 215, 106, 0.6), 0 1px 3px rgba(0, 0, 0, 0.9);
+  }
+  50% {
+    text-shadow: 0 0 18px rgba(255, 215, 106, 1), 0 0 6px rgba(255, 215, 106, 0.9), 0 1px 3px rgba(0, 0, 0, 0.9);
+  }
+}
+
+.map-marker--question .map-marker__hotspot {
+  position: relative;
+  animation: marker-question-glow 2.4s ease-in-out infinite;
+}
+
+@keyframes marker-question-glow {
+  0%, 100% {
+    box-shadow: 0 0 6px 1px rgba(255, 215, 106, 0.25);
+  }
+  50% {
+    box-shadow: 0 0 24px 7px rgba(255, 215, 106, 0.8);
+  }
+}
+
+.map-marker--question .map-marker__hotspot::after,
+.map-marker--question .map-marker__hotspot::before {
+  content: '';
+  position: absolute;
+  inset: -30%;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 215, 106, 0.7);
+  opacity: 0;
+  animation: marker-question-pulse 2.4s ease-out infinite;
+  pointer-events: none;
+}
+
+.map-marker--question .map-marker__hotspot::before {
+  animation-delay: 1.2s;
+}
+
+@keyframes marker-question-pulse {
+  0% { opacity: 0.7; transform: scale(0.8); }
+  80%, 100% { opacity: 0; transform: scale(1.9); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .map-marker--question .map-marker__label,
+  .map-marker--question .map-marker__hotspot,
+  .map-marker--question .map-marker__hotspot::after,
+  .map-marker--question .map-marker__hotspot::before {
+    animation: none;
+  }
+}
+
+.map-marker__contact {
+  display: inline-block;
+  margin-top: 0.5em;
+  padding: 0.35em 0.9em;
+  border: 1px solid rgba(197, 179, 130, 0.6);
+  border-radius: 4px;
+  background: rgba(197, 179, 130, 0.12);
+  color: #ffd76a;
+  font-size: 0.82em;
+  font-weight: bold;
+  text-decoration: none;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.map-marker__contact:hover,
+.map-marker__contact:focus-visible {
+  background: rgba(255, 215, 106, 0.25);
+  box-shadow: 0 0 10px 2px rgba(255, 215, 106, 0.4);
+}
+
+@media (max-width: 640px) {
+  .map-marker__tooltip {
+    width: max(130px, 42vw);
+  }
+}
+
